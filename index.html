@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feelim</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root{
+    --ink:#0b2d1c;
+    --ink-soft:#3c5148;
+    --paper:#fbfdfb;
+    --paper-raised:#ffffff;
+    --line:#dbe7de;
+    --green:#04c96a;
+    --green-strong:#029d54;
+    --mint:#57f1a4;
+    --cyan:#8de8ea;
+    --yellow:#fadc57;
+    --coral:#e06d77;
+    --navy:#013a51;
+    --linkedin:#0a66c2;
+    --deep:#0b2d1c;
+    --shadow: 0 20px 60px -30px rgba(11,45,28,.35);
+    --radius-l: 28px;
+    --radius-m: 18px;
+    --radius-s: 10px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#eef7f1;
+      --ink-soft:#a9c2b6;
+      --paper:#081a12;
+      --paper-raised:#0f2a1d;
+      --line:#1c4531;
+      --green:#1de885;
+      --green-strong:#57f1a4;
+      --shadow: 0 24px 70px -30px rgba(0,0,0,.6);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#eef7f1;
+    --ink-soft:#a9c2b6;
+    --paper:#081a12;
+    --paper-raised:#0f2a1d;
+    --line:#1c4531;
+    --green:#1de885;
+    --green-strong:#57f1a4;
+    --shadow: 0 24px 70px -30px rgba(0,0,0,.6);
+    color-scheme: dark;
+  }
+  :root[data-theme="light"]{ color-scheme: light; }
+
+  *{box-sizing:border-box;}
+  [hidden]{display:none!important;}
+  html{scroll-behavior:smooth;overflow-x:hidden;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3{
+    font-family:'Sora', system-ui, sans-serif;
+    font-weight:800;
+    letter-spacing:-0.02em;
+    text-wrap:balance;
+    margin:0;
+  }
+  .mono{font-family:'JetBrains Mono', ui-monospace, monospace;}
+  p{margin:0;}
+  img{max-width:100%;display:block;}
+  a{color:inherit;}
+  button{font:inherit;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+  .mark{
+    background:linear-gradient(180deg, transparent 62%, var(--mint) 62%);
+    padding:0 .12em;
+  }
+  .mark-yellow{background:linear-gradient(180deg, transparent 62%, var(--yellow) 62%);}
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--green-strong);
+    font-weight:500;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:7px;height:7px;border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 0 4px color-mix(in srgb, var(--green) 22%, transparent);
+  }
+  section{position:relative;}
+
+  /* ---------- Motion system: scroll progress, reveal-on-scroll, micro-interactions ---------- */
+  .scroll-progress{
+    position:fixed;top:0;left:0;height:3px;width:0%;z-index:100;
+    background:linear-gradient(90deg,var(--green),var(--mint),var(--cyan));
+    box-shadow:0 0 14px color-mix(in srgb, var(--green) 55%, transparent);
+  }
+  .reveal,.reveal-left,.reveal-right,.reveal-scale{
+    opacity:0;transition:opacity .7s cubic-bezier(.19,1,.22,1), transform .7s cubic-bezier(.19,1,.22,1);
+  }
+  .reveal{transform:translateY(28px);}
+  .reveal-left{transform:translateX(-38px);}
+  .reveal-right{transform:translateX(38px);}
+  .reveal-scale{transform:translateY(18px) scale(.94);}
+  .reveal.in,.reveal-left.in,.reveal-right.in,.reveal-scale.in{opacity:1;transform:translate(0,0) scale(1);}
+  @media (prefers-reduced-motion: reduce){
+    .reveal,.reveal-left,.reveal-right,.reveal-scale{opacity:1!important;transform:none!important;transition:none!important;}
+  }
+
+  .tilt{transition:transform .4s cubic-bezier(.19,1,.22,1);will-change:transform;}
+
+  .orb{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0;animation:orbFloat ease-in-out infinite;}
+  @keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(22px,-18px) scale(1.08);}}
+  @media (prefers-reduced-motion: reduce){ .orb{animation:none;} }
+
+  /* ---------- Nav ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:color-mix(in srgb, var(--paper) 86%, transparent);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+    transition:box-shadow .3s ease;
+  }
+  header.scrolled{box-shadow:0 8px 30px -18px rgba(11,45,28,.28);}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;gap:16px;transition:padding .3s ease;}
+  header.scrolled .nav{padding-top:10px;padding-bottom:10px;}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+  .brand img{height:26px;width:auto;}
+  .brand-word{font-family:'Sora';font-weight:800;font-size:19px;color:var(--ink);}
+
+  /* -- theme-aware Feelim wordmark: black logo in light mode, white logo in dark mode -- */
+  .brand-logo-dark{display:none;}
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .brand-logo-light{display:none;}
+    :root:not([data-theme="light"]) .brand-logo-dark{display:block;}
+  }
+  :root[data-theme="dark"] .brand-logo-light{display:none;}
+  :root[data-theme="dark"] .brand-logo-dark{display:block;}
+  .nav-links{display:flex;align-items:center;gap:28px;}
+  .nav-links a{
+    position:relative;font-size:14.5px;font-weight:600;text-decoration:none;color:var(--ink-soft);
+    transition:color .15s;
+  }
+  .nav-links a::after{
+    content:"";position:absolute;left:0;bottom:-5px;width:0;height:2px;border-radius:2px;
+    background:var(--green);transition:width .25s cubic-bezier(.19,1,.22,1);
+  }
+  .nav-links a:hover{color:var(--ink);}
+  .nav-links a:hover::after{width:100%;}
+  .nav-right{display:flex;align-items:center;gap:14px;}
+  .lang-switch{position:relative;}
+  .lang-btn{
+    display:flex;align-items:center;gap:6px;
+    background:var(--paper-raised);border:1px solid var(--line);
+    border-radius:999px;padding:7px 12px;font-size:13px;font-weight:600;
+    cursor:pointer;color:var(--ink);
+  }
+  .lang-menu{
+    position:absolute;right:0;top:calc(100% + 8px);
+    background:var(--paper-raised);border:1px solid var(--line);
+    border-radius:14px;box-shadow:var(--shadow);
+    padding:6px;min-width:150px;display:none;flex-direction:column;gap:2px;
+  }
+  .lang-menu.open{display:flex;}
+  .lang-menu button{
+    text-align:left;border:0;background:none;padding:9px 10px;border-radius:8px;
+    font-size:13.5px;font-weight:600;color:var(--ink-soft);cursor:pointer;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .lang-menu button:hover{background:color-mix(in srgb, var(--green) 12%, transparent);color:var(--ink);}
+  .lang-menu button[aria-current="true"]{color:var(--green-strong);}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    border-radius:999px;padding:12px 22px;font-weight:700;font-size:14.5px;
+    text-decoration:none;border:1px solid transparent;cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease, background .15s;
+    position:relative;overflow:hidden;white-space:nowrap;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn:hover{transform:translateY(-2px);}
+  .btn-primary{
+    background:var(--ink);color:var(--paper);
+  }
+  .btn-primary:hover{box-shadow:0 14px 28px -10px rgba(11,45,28,.55);}
+  .btn-accent{
+    background:var(--green);color:#06210f;
+    box-shadow:0 10px 26px -10px color-mix(in srgb, var(--green) 70%, transparent);
+  }
+  .btn-accent:hover{background:var(--green-strong);box-shadow:0 16px 32px -10px color-mix(in srgb, var(--green) 75%, transparent);}
+  .btn-ghost{background:transparent;border-color:var(--line);color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--ink-soft);}
+  .btn-shine::after{
+    content:"";position:absolute;top:0;left:-60%;width:35%;height:100%;
+    background:linear-gradient(115deg, transparent, rgba(255,255,255,.55), transparent);
+    transform:skewX(-18deg);animation:btnShine 3.8s ease-in-out infinite;
+  }
+  @keyframes btnShine{0%{left:-60%;}20%{left:130%;}100%{left:130%;}}
+  @media (prefers-reduced-motion: reduce){ .btn-shine::after{animation:none;display:none;} }
+  .btn-sm{padding:9px 16px;font-size:13.5px;}
+  .nav .btn{padding:10px 18px;font-size:13.5px;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    overflow:hidden;
+    padding:76px 0 60px;
+    background:
+      radial-gradient(620px 380px at 82% -10%, color-mix(in srgb, var(--mint) 55%, transparent), transparent 70%),
+      radial-gradient(500px 320px at 8% 10%, color-mix(in srgb, var(--cyan) 45%, transparent), transparent 70%);
+  }
+  .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;}
+  .hero h1{font-size:clamp(34px,4.6vw,56px);line-height:1.04;margin-top:18px;}
+  .hero-sub{font-size:17.5px;color:var(--ink-soft);max-width:46ch;margin-top:20px;}
+  .hero-ctas{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap;}
+  .hero-stats{display:flex;gap:34px;margin-top:38px;}
+  .hstat b{font-family:'Sora';font-size:26px;display:block;}
+  .hstat span{font-size:12.5px;color:var(--ink-soft);font-weight:600;}
+
+  .hero .eyebrow,.hero h1,.hero-sub,.hero-ctas,.hero-stats{
+    opacity:0;animation:heroIn .8s cubic-bezier(.19,1,.22,1) forwards;
+  }
+  .hero .eyebrow{animation-delay:.05s;}
+  .hero h1{animation-delay:.15s;}
+  .hero-sub{animation-delay:.28s;}
+  .hero-ctas{animation-delay:.4s;}
+  .hero-stats{animation-delay:.52s;}
+  @keyframes heroIn{ from{opacity:0;transform:translateY(18px);} to{opacity:1;transform:translateY(0);} }
+  @media (prefers-reduced-motion: reduce){
+    .hero .eyebrow,.hero h1,.hero-sub,.hero-ctas,.hero-stats{opacity:1;animation:none;transform:none;}
+  }
+
+  /* floating UI mock */
+  .stage{position:relative;height:460px;}
+  .orb-hero-a{width:260px;height:260px;background:var(--mint);top:-70px;right:-30px;opacity:.5;animation-duration:16s;}
+  .orb-hero-b{width:200px;height:200px;background:var(--cyan);bottom:-60px;left:20px;opacity:.4;animation-duration:19s;animation-delay:-4s;}
+  .panel{
+    position:absolute;background:var(--paper-raised);border:1px solid var(--line);
+    border-radius:var(--radius-m);box-shadow:var(--shadow);overflow:hidden;
+  }
+  @keyframes float{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  @keyframes panelIn{ 0%{opacity:0;transform:translateY(36px) scale(.93);} 100%{opacity:1;transform:translateY(0) scale(1);} }
+  .panel-main{
+    width:340px;left:14px;top:18px;z-index:3;padding:18px;
+    overflow:visible;
+    animation:panelIn .8s cubic-bezier(.19,1,.22,1) .08s both, float 8s ease-in-out infinite .88s;
+  }
+  .panel-topic{display:flex;gap:9px;align-items:center;font-size:12px;color:var(--ink-soft);font-weight:600;}
+  .panel-topic .dot{width:8px;height:8px;border-radius:50%;background:var(--green);}
+  .alt-row{display:flex;gap:8px;margin-top:14px;}
+  .alt{
+    flex:1;border:1px solid var(--line);border-radius:12px;padding:10px 8px;
+    font-size:11px;color:var(--ink-soft);text-align:center;font-weight:600;
+    transition:transform .2s ease, border-color .2s ease;
+  }
+  .alt.picked{border-color:var(--green);background:color-mix(in srgb, var(--green) 10%, transparent);color:var(--ink);}
+  .alt:hover{transform:translateY(-2px);}
+  .rating-block{margin-top:16px;display:flex;flex-direction:column;gap:9px;}
+  .rating-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:700;color:var(--ink-soft);}
+  .bar{height:6px;border-radius:6px;background:var(--line);overflow:hidden;margin-top:4px;}
+  .bar i{
+    display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--mint));border-radius:6px;
+    width:0%;transition:width 1.1s cubic-bezier(.19,1,.22,1);
+  }
+  .keywords{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;}
+  .kw{
+    background:color-mix(in srgb, var(--cyan) 24%, var(--paper-raised));color:var(--ink);font-size:10.5px;font-weight:700;
+    padding:4px 9px;border-radius:999px;transition:transform .15s ease;
+  }
+  .kw:hover{transform:scale(1.1);}
+
+  /* -- LinkedIn post framing for the main mock panel -- */
+  .li-badge{
+    position:absolute;top:-12px;left:16px;z-index:6;width:28px;height:28px;border-radius:8px;
+    background:var(--linkedin);color:#fff;display:flex;align-items:center;justify-content:center;
+    font-family:'Sora';font-weight:800;font-size:14px;box-shadow:0 8px 18px -6px rgba(10,102,194,.65);
+  }
+  .li-post-head{display:flex;align-items:center;gap:9px;margin-bottom:12px;}
+  .li-avatar{
+    width:32px;height:32px;border-radius:50%;flex-shrink:0;
+    background:linear-gradient(135deg,var(--green),var(--mint));
+    display:flex;align-items:center;justify-content:center;
+  }
+  .li-avatar svg{width:16px;height:16px;}
+  .li-name{display:flex;flex-direction:column;gap:2px;}
+  .li-name b{font-family:'Sora';font-size:12.5px;font-weight:700;}
+  .li-meta{font-size:10.5px;color:var(--ink-soft);font-weight:600;display:flex;align-items:center;gap:4px;}
+  .li-reactions{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    margin-top:14px;padding-top:12px;border-top:1px solid var(--line);
+  }
+  .li-reactions .stack{display:flex;align-items:center;}
+  .li-reactions .stack i{
+    width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:9px;border:1.5px solid var(--paper-raised);margin-left:-5px;font-style:normal;
+  }
+  .li-reactions .stack i:first-child{margin-left:0;}
+  .li-reactions .r-like{background:var(--linkedin);color:#fff;}
+  .li-reactions .r-heart{background:var(--coral);color:#fff;}
+  .li-reactions .r-clap{background:var(--yellow);color:#5a4400;}
+  .li-reactions .count{font-size:11px;font-weight:700;color:var(--ink-soft);}
+  .li-reactions .li-metrics{display:flex;gap:12px;}
+  .li-reactions .li-metrics span{display:flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--ink-soft);}
+  .li-reactions .li-metrics svg{width:13px;height:13px;opacity:.7;}
+
+  .panel-cal{
+    width:210px;right:0;bottom:6px;z-index:2;padding:14px;
+    animation:panelIn .8s cubic-bezier(.19,1,.22,1) .26s both, float 9s ease-in-out infinite 1.06s;
+  }
+  .cal-head{font-size:11px;font-weight:700;color:var(--ink-soft);display:flex;justify-content:space-between;}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:10px;}
+  .cal-grid span{width:100%;aspect-ratio:1;border-radius:5px;background:var(--line);transition:transform .15s ease;}
+  .cal-grid span.on{background:var(--green);}
+  .cal-grid span.mid{background:var(--mint);}
+  .cal-grid span:hover{transform:scale(1.18);}
+
+  .panel-score{
+    width:150px;left:0;bottom:-8px;z-index:4;padding:12px;text-align:center;
+    animation:panelIn .8s cubic-bezier(.19,1,.22,1) .18s both, float 6.5s ease-in-out infinite .98s;
+  }
+  .panel-score b{font-family:'Sora';font-size:28px;color:var(--green-strong);}
+  .panel-score span{font-size:10.5px;color:var(--ink-soft);font-weight:700;display:block;margin-top:2px;}
+
+  .badge-models{
+    position:absolute;top:-14px;right:70px;z-index:5;
+    background:var(--ink);color:var(--paper);border-radius:999px;
+    padding:8px 14px;font-size:11px;font-weight:700;display:flex;gap:6px;align-items:center;
+    box-shadow:var(--shadow);
+    opacity:0;animation:heroIn .7s cubic-bezier(.19,1,.22,1) .7s forwards;
+  }
+  @media (prefers-reduced-motion: reduce){ .badge-models{opacity:1;animation:none;} }
+
+  /* -- thinking / writing animation -- */
+  .feelim-anim-thinking{
+    --t-green:#2DEA89; --t-black:#0a0a0a; --t-paper-line:#eef0ec;
+    width:220px;height:260px;background:#ffffff;border:1px solid var(--line);
+    border-radius:20px;position:relative;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;box-sizing:border-box;
+  }
+  .feelim-anim-thinking .doc-lines{position:absolute;top:26px;bottom:26px;left:28px;right:28px;display:flex;flex-direction:column;justify-content:space-evenly;}
+  .feelim-anim-thinking .doc-lines .doc-line{
+    height:7px;border-radius:4px;background:var(--t-paper-line);width:0%;
+    animation:feelim-writeLine 4.8s ease-in-out infinite;
+  }
+  .feelim-anim-thinking .doc-line.l1{animation-delay:0s;} .feelim-anim-thinking .doc-line.l2{animation-delay:.4s;}
+  .feelim-anim-thinking .doc-line.l3{animation-delay:.8s;} .feelim-anim-thinking .doc-line.l4{animation-delay:1.2s;}
+  .feelim-anim-thinking .doc-line.l5{animation-delay:1.6s;} .feelim-anim-thinking .doc-line.l6{animation-delay:2.0s;}
+  .feelim-anim-thinking .doc-line.l7{animation-delay:2.4s;} .feelim-anim-thinking .doc-line.l8{animation-delay:2.8s;}
+  @keyframes feelim-writeLine{
+    0%{width:0%;opacity:.9;} 35%{width:var(--w,80%);opacity:.9;} 78%{width:var(--w,80%);opacity:.9;} 96%,100%{width:0%;opacity:0;}
+  }
+
+  /* -- creating-image animation -- */
+  .feelim-anim-creating{
+    --c-green:#2DEA89; --c-black:#0a0a0a; --c-gray:#d6dad2;
+    width:220px;height:260px;background:#ffffff;border:1px solid var(--line);
+    border-radius:20px;position:relative;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;box-sizing:border-box;
+  }
+  .feelim-anim-creating .canvas-svg{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;}
+  .feelim-anim-creating .icon-part{fill:none;stroke:var(--c-gray);stroke-width:.575;stroke-linecap:round;stroke-linejoin:round;}
+  .feelim-anim-creating .icon-rect{stroke-dasharray:72;stroke-dashoffset:72;animation:feelim-drawRect 5s ease-in-out infinite;}
+  .feelim-anim-creating .icon-circle{stroke-dasharray:9.5;stroke-dashoffset:9.5;animation:feelim-drawCircle 5s ease-in-out infinite;}
+  .feelim-anim-creating .icon-mountain{stroke-dasharray:23;stroke-dashoffset:23;animation:feelim-drawMountain 5s ease-in-out infinite;}
+  @keyframes feelim-drawRect{0%{stroke-dashoffset:72;opacity:1;}30%{stroke-dashoffset:0;opacity:1;}82%{stroke-dashoffset:0;opacity:1;}97%,100%{stroke-dashoffset:0;opacity:0;}}
+  @keyframes feelim-drawCircle{0%,20%{stroke-dashoffset:9.5;opacity:1;}40%{stroke-dashoffset:0;opacity:1;}82%{stroke-dashoffset:0;opacity:1;}97%,100%{stroke-dashoffset:0;opacity:0;}}
+  @keyframes feelim-drawMountain{0%,38%{stroke-dashoffset:23;opacity:1;}60%{stroke-dashoffset:0;opacity:1;}82%{stroke-dashoffset:0;opacity:1;}97%,100%{stroke-dashoffset:0;opacity:0;}}
+
+  /* -- shared mascot (bounce / thinking eyes / typing dots) -- */
+  .feelim-anim-thinking .logo-wrap,.feelim-anim-creating .logo-wrap{
+    position:relative;z-index:2;animation:feelim-bounce 1s cubic-bezier(.28,.84,.42,1) infinite;
+  }
+  @keyframes feelim-bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);}}
+  .feelim-anim-thinking svg.mark,.feelim-anim-creating svg.mark{
+    width:78px;height:100px;display:block;filter:drop-shadow(0 10px 14px rgba(0,0,0,.12));
+  }
+  .feelim-anim-thinking .eye,.feelim-anim-creating .eye{animation:feelim-think 3.6s ease-in-out infinite;transform-origin:center;}
+  @keyframes feelim-think{
+    0%,8%{transform:translate(0,0) scaleY(1);} 20%{transform:translate(2.5px,-1px) scaleY(1);}
+    32%{transform:translate(2.5px,-1px) scaleY(1);} 40%{transform:translate(-2.5px,.5px) scaleY(1);}
+    52%{transform:translate(-2.5px,.5px) scaleY(1);} 58%{transform:translate(0,0) scaleY(.1);}
+    62%{transform:translate(0,0) scaleY(1);} 100%{transform:translate(0,0) scaleY(1);}
+  }
+  .feelim-anim-thinking .dot,.feelim-anim-creating .dot{
+    transform-box:fill-box;transform-origin:center;animation:feelim-dotPulse 1.1s ease-in-out infinite;
+  }
+  .feelim-anim-thinking .dot-1,.feelim-anim-creating .dot-1{animation-delay:0s;}
+  .feelim-anim-thinking .dot-2,.feelim-anim-creating .dot-2{animation-delay:.15s;}
+  .feelim-anim-thinking .dot-3,.feelim-anim-creating .dot-3{animation-delay:.3s;}
+  @keyframes feelim-dotPulse{0%,60%,100%{transform:translateY(0) scale(1);opacity:.55;}30%{transform:translateY(-3.5px) scale(1.15);opacity:1;}}
+  @media (prefers-reduced-motion: reduce){
+    .feelim-anim-thinking .doc-line,.feelim-anim-thinking .logo-wrap,.feelim-anim-thinking .eye,.feelim-anim-thinking .dot,
+    .feelim-anim-creating .logo-wrap,.feelim-anim-creating .eye,.feelim-anim-creating .dot,
+    .feelim-anim-creating .icon-rect,.feelim-anim-creating .icon-circle,.feelim-anim-creating .icon-mountain{animation:none!important;}
+  }
+
+  /* -- mascot badges: the two animations above, shrunk into small overlay "stickers"
+     superimposed on already-existing step cards, part of the how-it-works storytelling -- */
+  .mascot-badge{
+    position:absolute;top:-13px;right:-11px;width:64px;height:75px;z-index:6;
+    border-radius:13px;overflow:hidden;box-shadow:0 10px 20px rgba(10,10,10,.22);
+    pointer-events:none;
+  }
+  .mascot-badge.badge-thinking{transform:rotate(-6deg);}
+  .mascot-badge.badge-creating{transform:rotate(5deg);}
+  .mascot-badge .feelim-anim-thinking,.mascot-badge .feelim-anim-creating{
+    transform:scale(.291);transform-origin:top left;border-radius:20px;
+  }
+  @media (max-width:920px){
+    .mascot-badge{width:46px;height:54px;top:-9px;right:-8px;border-radius:10px;}
+    .mascot-badge .feelim-anim-thinking,.mascot-badge .feelim-anim-creating{transform:scale(.209);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .mascot-badge{box-shadow:0 4px 10px rgba(10,10,10,.16);}
+  }
+
+  /* ---------- Pain section ---------- */
+  .pain{padding:100px 0 90px;background:var(--deep);color:#f2f9f4;}
+  .pain .eyebrow{color:var(--mint);}
+  .pain .eyebrow::before{background:var(--mint);box-shadow:0 0 0 4px rgba(87,241,164,.25);}
+  .pain h2{color:#fff;font-size:clamp(28px,3.4vw,42px);max-width:22ch;}
+  .pain-body{color:#c9dcd0;max-width:60ch;margin-top:16px;font-size:16.5px;}
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:46px;}
+  .compare-card{border-radius:var(--radius-m);padding:24px 24px 26px;border:1px solid rgba(255,255,255,.1);}
+  .compare-bad{background:linear-gradient(180deg, rgba(224,109,119,.14), rgba(224,109,119,.04));}
+  .compare-good{background:linear-gradient(180deg, rgba(87,241,164,.16), rgba(87,241,164,.05));}
+  .compare-card h3{font-size:15px;color:#fff;display:flex;align-items:center;gap:8px;}
+  .compare-card ul{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:11px;}
+  .compare-card li{font-size:14px;color:#d7e6dc;display:flex;gap:10px;line-height:1.4;}
+  .tag-x{color:var(--coral);font-weight:800;}
+  .tag-ok{color:var(--mint);font-weight:800;}
+
+  /* ---------- Value sections ---------- */
+  .value{padding:92px 0;}
+  .value-row{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+  .value-row.rev .value-copy{order:2;}
+  .value-row.rev .value-visual{order:1;}
+  .value-copy h2{font-size:clamp(24px,2.8vw,34px);margin-top:14px;}
+  .value-copy p{color:var(--ink-soft);margin-top:14px;font-size:15.5px;max-width:48ch;}
+  .value-visual{
+    background:var(--paper-raised);border:1px solid var(--line);border-radius:var(--radius-l);
+    padding:26px;box-shadow:var(--shadow);
+  }
+
+  .model-chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;}
+  .chip{
+    display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;
+    padding:10px 14px;font-size:13px;font-weight:700;background:var(--paper);
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .chip:hover{transform:translateY(-3px);box-shadow:0 10px 20px -10px rgba(11,45,28,.3);}
+  .chip i{width:9px;height:9px;border-radius:3px;display:inline-block;}
+  .chip.claude i{background:#d97757;animation:chipPulse 2.2s ease-in-out infinite;}
+  .chip.openai i{background:#10a37f;animation:chipPulse 2.2s ease-in-out infinite .3s;}
+  .chip.gemini i{background:#4285f4;animation:chipPulse 2.2s ease-in-out infinite .6s;}
+  @keyframes chipPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.3);}}
+  @media (prefers-reduced-motion: reduce){ .chip.claude i,.chip.openai i,.chip.gemini i{animation:none;} }
+  .chip.feelim{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .chip.feelim i{background:var(--green);}
+
+  .doc-mock{border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--paper);}
+  .doc-mock .doc-head{display:flex;gap:8px;align-items:center;font-size:11px;font-weight:700;color:var(--ink-soft);}
+  .doc-mock .doc-head .sq{width:24px;height:24px;border-radius:6px;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:11px;}
+  .doc-lines{margin-top:12px;display:flex;flex-direction:column;gap:7px;}
+  .doc-lines i{display:block;height:8px;border-radius:5px;background:var(--line);}
+  .doc-lines i:nth-child(1){width:92%;} .doc-lines i:nth-child(2){width:76%;} .doc-lines i:nth-child(3){width:84%;background:color-mix(in srgb, var(--cyan) 60%, var(--line));}
+  .share-row{display:flex;align-items:center;gap:8px;margin-top:16px;}
+  .avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--mint),var(--cyan));border:2px solid var(--paper-raised);margin-left:-8px;}
+  .avatar:first-child{margin-left:0;}
+
+  .publish-mock{border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--paper);}
+  .pm-top{display:flex;justify-content:space-between;align-items:center;}
+  .pm-pill{
+    background:var(--green);color:#06210f;font-size:10.5px;font-weight:800;padding:4px 10px 4px 8px;
+    border-radius:999px;display:inline-flex;align-items:center;gap:5px;
+  }
+  .pm-pill::before{
+    content:"";width:6px;height:6px;border-radius:50%;background:#06210f;
+    animation:pmPulse 1.4s ease-in-out infinite;
+  }
+  @keyframes pmPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.35;transform:scale(1.4);}}
+  @media (prefers-reduced-motion: reduce){ .pm-pill::before{animation:none;} }
+  .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+  .metric{border:1px solid var(--line);border-radius:10px;padding:10px;}
+  .metric b{font-family:'Sora';font-size:19px;display:block;}
+  .metric span{font-size:10.5px;color:var(--ink-soft);font-weight:700;}
+
+  .clock-visual{display:flex;align-items:center;justify-content:center;gap:28px;padding:20px 0;}
+  .clock{position:relative;width:120px;height:120px;border-radius:50%;border:10px solid var(--line);display:flex;align-items:center;justify-content:center;}
+  .clock.small{width:78px;height:78px;border-width:8px;border-color:var(--green);}
+  .clock b{font-family:'Sora';font-size:20px;}
+  .clock.small b{font-size:15px;color:var(--green-strong);}
+  .arrow-big{font-size:28px;color:var(--ink-soft);}
+
+  /* ---------- How it works ---------- */
+  .how{padding:100px 0;background:
+    linear-gradient(180deg, var(--paper), color-mix(in srgb, var(--cyan) 14%, var(--paper)));
+  }
+  .how-head{max-width:640px;}
+  .how-head h2{font-size:clamp(26px,3vw,38px);margin-top:14px;}
+  .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:52px;}
+  .step{
+    background:var(--paper-raised);border:1px solid var(--line);border-radius:16px;padding:18px 16px;position:relative;
+    transition:border-color .25s ease, box-shadow .25s ease;
+  }
+  .step:hover{border-color:var(--green);box-shadow:0 16px 34px -20px rgba(11,45,28,.35);}
+  .step .n{font-family:'JetBrains Mono';font-size:12px;color:var(--green-strong);font-weight:700;transition:transform .25s ease;}
+  .step:hover .n{transform:scale(1.15);}
+  .step h4{font-family:'Sora';font-size:15px;margin-top:10px;font-weight:700;}
+  .step p{font-size:12.5px;color:var(--ink-soft);margin-top:6px;line-height:1.45;}
+  .step:not(:last-child)::after{
+    content:"→";position:absolute;right:-19px;top:50%;transform:translateY(-50%);
+    color:var(--ink-soft);font-size:15px;display:none;
+  }
+  @media (min-width:900px){ .step:not(:last-child)::after{display:block;} }
+
+  /* ---------- Pricing ---------- */
+  .pricing{padding:100px 0;}
+  .pricing-head{text-align:center;max-width:600px;margin:0 auto;}
+  .pricing-head h2{font-size:clamp(26px,3vw,38px);margin-top:14px;}
+  .pricing-head p{color:var(--ink-soft);margin-top:14px;font-size:15.5px;}
+  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:52px;align-items:stretch;}
+  .plan{
+    border:1px solid var(--line);border-radius:var(--radius-l);padding:30px 26px;
+    background:var(--paper-raised);display:flex;flex-direction:column;
+  }
+  .plan.featured{
+    border-color:var(--green);
+    background:linear-gradient(180deg, color-mix(in srgb, var(--green) 9%, var(--paper-raised)), var(--paper-raised));
+    box-shadow:var(--shadow);
+    transform:translateY(-10px);
+    animation:planGlow 3.6s ease-in-out infinite;
+  }
+  @keyframes planGlow{
+    0%,100%{box-shadow:var(--shadow);}
+    50%{box-shadow:0 26px 60px -22px color-mix(in srgb, var(--green) 55%, transparent);}
+  }
+  @media (prefers-reduced-motion: reduce){ .plan.featured{animation:none;} }
+  .plan-badge{
+    align-self:flex-start;background:var(--green);color:#06210f;font-size:11px;font-weight:800;
+    padding:5px 11px;border-radius:999px;margin-bottom:14px;
+  }
+  .plan h3{font-family:'Sora';font-size:19px;}
+  .price{display:flex;align-items:baseline;gap:6px;margin-top:14px;}
+  .price b{font-family:'Sora';font-size:40px;}
+  .price span{color:var(--ink-soft);font-size:13.5px;font-weight:600;}
+  .plan-desc{color:var(--ink-soft);font-size:13.5px;margin-top:8px;}
+  .plan ul{list-style:none;padding:0;margin:22px 0 26px;display:flex;flex-direction:column;gap:11px;flex:1;}
+  .plan li{font-size:13.5px;display:flex;gap:9px;line-height:1.4;}
+  .plan li b{color:var(--green-strong);font-weight:800;}
+
+  /* ---------- Final CTA ---------- */
+  .final{padding:110px 0 120px;position:relative;overflow:hidden;background:var(--deep);}
+  .final::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(560px 340px at 50% 0%, rgba(87,241,164,.28), transparent 70%);
+  }
+  .final-inner{position:relative;text-align:center;max-width:680px;margin:0 auto;}
+  .final h2{color:#fff;font-size:clamp(28px,4vw,46px);}
+  .final p{color:#c9dcd0;margin-top:16px;font-size:16.5px;}
+  .final .hero-ctas{justify-content:center;margin-top:30px;}
+  .orb-final-a{width:280px;height:280px;background:var(--mint);top:-90px;left:8%;opacity:.22;animation-duration:17s;}
+  .orb-final-b{width:220px;height:220px;background:var(--cyan);bottom:-70px;right:10%;opacity:.18;animation-duration:20s;animation-delay:-6s;}
+
+  footer{padding:40px 0;border-top:1px solid var(--line);}
+  .foot-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+  .foot-brand{display:flex;align-items:center;gap:9px;}
+  .foot-brand img{height:20px;}
+  footer small{color:var(--ink-soft);font-size:12.5px;}
+
+  /* ---------- Wompi payment confirmation ---------- */
+  .wompi-modal{
+    position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;
+    padding:24px;background:rgba(8,26,18,.55);backdrop-filter:blur(6px);
+    opacity:0;transition:opacity .25s ease;
+  }
+  .wompi-modal.open{opacity:1;}
+  .wompi-modal-card{
+    position:relative;width:100%;max-width:380px;background:var(--paper-raised);
+    border-radius:var(--radius-l);box-shadow:var(--shadow);padding:38px 30px 30px;
+    text-align:center;transform:translateY(18px) scale(.96);transition:transform .3s cubic-bezier(.19,1,.22,1);
+  }
+  .wompi-modal.open .wompi-modal-card{transform:translateY(0) scale(1);}
+  .wompi-modal-close{
+    position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;
+    border:1px solid var(--line);background:var(--paper);color:var(--ink-soft);cursor:pointer;
+    font-size:13px;display:flex;align-items:center;justify-content:center;
+  }
+  .wompi-modal-close:hover{color:var(--ink);border-color:var(--ink-soft);}
+  .wompi-check{
+    width:56px;height:56px;border-radius:50%;margin:0 auto 18px;
+    background:var(--green);color:#06210f;font-size:26px;font-weight:800;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 12px 26px -10px color-mix(in srgb, var(--green) 70%, transparent);
+    animation:wompiPop .5s cubic-bezier(.19,1,.22,1);
+  }
+  @keyframes wompiPop{0%{transform:scale(.4);opacity:0;}60%{transform:scale(1.12);opacity:1;}100%{transform:scale(1);}}
+  .wompi-modal-card h3{font-family:'Sora';font-size:21px;}
+  .wompi-modal-card p{color:var(--ink-soft);margin-top:10px;font-size:14.5px;line-height:1.5;}
+  .wompi-modal-card .btn{margin-top:22px;width:100%;}
+  .wompi-modal-dismiss{
+    display:block;margin:14px auto 0;background:none;border:0;color:var(--ink-soft);
+    font-size:13px;font-weight:600;cursor:pointer;text-decoration:underline;
+  }
+  .wompi-popup-msg{
+    position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:14px;background:var(--paper);text-align:center;padding:24px;
+  }
+  .wompi-popup-msg p{font-size:14.5px;font-weight:600;color:var(--ink-soft);max-width:32ch;}
+
+  @media (max-width:920px){
+    .hero-grid{grid-template-columns:1fr;}
+    .stage{height:380px;margin-top:10px;}
+    .compare{grid-template-columns:1fr;}
+    .value-row{grid-template-columns:1fr;gap:30px;}
+    .value-row.rev .value-copy,.value-row.rev .value-visual{order:0;}
+    .steps{grid-template-columns:1fr 1fr;}
+    .plans{grid-template-columns:1fr;}
+    .plan.featured{transform:none;}
+    .nav-links{display:none;}
+  }
+  @media (max-width:480px){
+    .panel-main{width:264px;}
+    .panel-cal{width:164px;}
+    .badge-models{font-size:9.5px;padding:6px 10px;right:8px;gap:4px;}
+    .stage{height:420px;}
+    .wrap{padding:0 16px;}
+    .nav{padding-left:16px;padding-right:16px;gap:8px;}
+    .nav-right{gap:8px;}
+    .brand img{height:22px;}
+    .nav .btn{padding:8px 13px;font-size:12.5px;}
+    .lang-btn{padding:6px 9px;font-size:12px;}
+    .wompi-modal-card{padding:30px 20px 24px;}
+    .wompi-check{width:48px;height:48px;font-size:22px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .panel{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+
+<header>
+  <div class="nav wrap">
+    <a class="brand" href="#top">
+      <img class="brand-logo brand-logo-light" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPQAAABECAMAAACBO+i5AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAAlwSFlzAAAWJQAAFiUBSVIk8AAAARdQTFRFR3BMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOO+TAAAAAAAAAAAAAAAAAAAAAAAAAAAAN+6TAAAAAAAAOO+PAAAANu2RNu6SN++SAAAANu+TAAAANe+VNu6TQO+POe+TN+6SN+2RNu6SNu6TOOySMO+PN++SOu+VOO+XNuyTAAAANu6S////G3dJEBAQKbJuBx4T39/fL9CAYGBg7+/vMDAwLMF3ICAgv7+/IpRcQEBABA8Jz8/PDjwlH4ZSM9+JUFBQFVo3BA8KMt+JBx4Sj4+PcHBwMNCAr6+vf39/FFk3IpVbsLCwHoVTJaNln5+fGGlALcF3kJCQgICAAw8JF2hACy0cCi0cEUouFVk3GGhAHoZSBPHfuAAAACt0Uk5TAIAQ79+fYCBAv0BwMM9QkH+Pv6CvILCA759fUG8wzxBQ35Dfr2AQrzAgUEjKg8gAAAViSURBVHja7Zp5Y+IoFMATcgDNYa/pdO69L2K1Wm21h07vaXfn3Nn7+3+OTUyC5JCEGFuX7vtHwSfwAx484CnKyrpXWl4+U6SQnzwhWZEC+mUuW7c9HI52RsP2fuqHdSmgM7zjdx9OjshU/jh9N2Z+lhB6PEoAx3Lalhf6+kMe8UQufpYT+vqU8OT0WkLonSPCl3CwZYL+eEGKZUcu6NERIeWo5YHeISVlKA/0X2WZyedrWaBLj7MvJ5JAizATkv4/V9lcVuiPZHHQVj1tRIaxiX0xjFWaBywDG1U7dXyxQGi1HmiVFqjHWbYepmGlAsUm97JAQz3OAFUK5Da6ddNrHu8tIbQxXxVc5k4zkKvlgybZCV8X9N6EudlrLRs05DRoXuhBCN3s3/PqvVjo1s2bweUBTb6JoA/veZ/OTm+N5uB5oUMb7lDqX0PmTlmbXpQvkoVW56uTbfT7EHJAO+F4kn5dEzSwUSj2LA0Ya4ACaOBEGQ1lXujjaDpPh/7TcW9wSOqABqsOs+QaKMfvWtNZDch1TsBGkNSmKyWAgVDfxbRUy2Uqga6pqmbcmWyjOxF0q6JzYnKQ0+WkfSmI0xpTbDVvg/IxTDohENXwZxFci01ei8owaeHYTDd6kGPDtUDbek5Jq6zGUy2roLs86OQsYdqA2KJ0vxNAoj/XUo3u97I2nJLdKtC2llsWQ72aX9tTcWgVJivTIOO+xdSJdN+36g6PmdxWgIbajMIotTurOjQTGkLWiKfQRgqRYJQtNO15HvDPG20etIOTEqnohM80PT5kZzjIh55OWCMFne3gTOENReyMteuJOCfhOmPOVsDp40O+IysCXUIcQeihEDRMDTS2XNtG1kZqqBmnElsIImRNmTRQP7Sm7Iqof+6KQ6OsJw7plr0VJBsUiW6s0wlv1Q9NlLaI9t+eEDRKIDFHLkA30iBFu8BlFnzWAsSgdQshNWHaDRe5rGUr3lsBi+6KQduJ9sE8xxIyRThsuZjpFiHo0Oux0mc9oLHQAreh/3ie+PSmXYwYWWMmAzVph9XAzGooBB0aEchcMzQS0KWpd33dr4WhSdHhE/I1oCC0nd4nt8IMKwntvS33ktXNC78odFnvGjqyIielwe6c4VtW97bkm6X3FQ+6gZJyn9C4ENrzhidFzH9O9J4Ju6FLDO157ducLXuatXs+0XolF3TAvXNyRn85+/234bl3yuxWvjxRpIMO5Hy/HUj3PAo3Csf6LIoneyQOTf0QG+YIYLesPAWo3AF0WkYs8xNFHFovOm1Dkue+8O/IFgzdZZi/fFQBepM5zucL9ZUcsCTQY9+e41jJL5QK0EyLZ4w1nnlxdl/Q+/Ea5nmPg6OvMHTiLGBYLvJtGwAIbddUzbSvRPBaqKFEGuheoEcn5wzz8woXg7joEgFodV4i1DLS0ef2t+GBTxyac9bdSk/fO4LeLhfnvR6sYcHlaoWLwcZMpNhYHP5rWO3Q35RCnsS2P6947w2cIujZN4OLgf7u+wLg7fXHPzBPEFXuvaFTAD2bejHQivJihSMvfozfZbQ5XjhAo+jRfla/uAuCLhPTRF+HMn/AGOuhYIw4JeSs4VhlnREzO9ha+PKkmHEd2KgLGkCe2K5laHM+/IdXfSqmIUF+6y03436hBo5q0nRn07AQJ3KIdc0TGalnzIl3n1GBeL6Qqv+kGOQBQpP/oR8idOvqMgq22HsfBQoeXu615IY+jp/kb/wvl3H83EBq6H4Qh/BL8C0ISejRiIy+zNAHCegOjZ+TGjqIlutNQhGu4jjYfqfZ/CT56n0Yr1oHe9HwHrw+lG/11h7ilrUhxmxIAQ1EqDUDyMD8LxJFiQl93aqEAAAAAElFTkSuQmCC" alt="Feelim" />
+      <img class="brand-logo brand-logo-dark" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAABYCAMAAAB4ZzokAAAApVBMVEW6+dgs6on////////////////+/v7///////////////8t6on///////////////////8t6okt6on///8t6okt6oks6Ygt6okt6okt6okt6okt6okt6okt6okt6Ykt6okt6okt6oks6Ykt6Ygt6okt6okt6okt6Ygt6okt6Ygt6Ygs6okt6oks6okt6okt6Ykt6okt6oks6oks6okt6on///8t6okVKvcDAAAANXRSTlMBCJSiFCTkMtTzdmSERGPCVPJutPYVJebB1YGWRrZToe/6NyE9MnRCk34f0F2dEVfisXevj/0/IXMAAAgFSURBVHja7ZzpgqI4EIAN5CBIAIVWPNvpc6Z37l19/0db7gQIEKF17IH65TDRwEdVUld6MhlllEvK3eu0g2zvBslqvTqdL/7q82KAsL7MTp3EXw9Pt0CjXs1W/4SykvJcPgwO1tNSqjazQ/B5vn18vIvlbbGdblYH/1Nh0NfBwZpWtWb2M/jy462qg8/zXUHHpoOH9WkZrF9rRz+vg8MIK5Of99PmXW7xEvgjrEgO9/v2Le55vRxhnU7B9FHJM9sHg4e1XCu7mc/BsGF9CvZA/VuLe3/AsPzdedHLY0hrqLCWm3Njl+fdp4HCWn45P87broYJ69ApJl7vhwjL//bW5ZuLxRBh7R4noyjCCp5GCqqwVluVYUDRCUOkRRD8yLA27RgAsS3LRSo/5xlton1gWNv2ZRq4Dj0eqecqaJdxbBPn/Z8BmlxsQXOhG10g7zeRgtPAUgIOuVFYhPKfp9wAmI7DC9gxr2j5UM/uwwK3D+tI+DtOL2PterRgDsBDHwgW4rdC3YuxIa7LxFeB6EeEBSxxTnAZVkgLDZ06wmLONUv/SLA84Roll9ErLZnY4JoLrPReqDn5OLAgFmHZF4HFaNXkiJPMqKBYg4LFLd1g/GK8B2NNRZdvxwydi5sh0CSwokXftonS/luEhasOvGNeCZYmXDPgFWGpSwEW1WFVwHVgTYjgOpgXWbImNlV3E9phtceBACLm2qkwVIsSIJQPc8vRuNwpdTF/Z40pAkmSACglDqBe2Q1rZ7nrDSuM0L3CQuyYTPZgkFmOCMTQbQTaYIUhbfTb1NDy947ypEjy9fhNheGjy/jPgeSa6bL2hYfosZ9lt5N9eu0LC1nV/cCwSHnqcIOh1X3CRi2wwt83dV3XuMsIPSdbOSPDga6WvQLsmcm0gJg6zt6cZreZF4pCdaKghb/3PWExj0p2y/BFwVJOQbrFCrtzHazIyguxiDCMJe63qNThUGgXNBjr77WN3n/tBQu4dW4GLqQJis8k/rpHWmGV9EAYZsOyumIT8HUunwO9C6uHYNoLllvvkmELCqxo3TCa5Yy6wLLsyu9ihpzKJPq7wPo9a4clcR3KSTI5LZfbIG1ycGFD1oFxIVVYepXL0bMkt8LOS/5J5Tk4tcI6YqciKS3kNbr5GJX3f7loQMkpxaACS/oOJJNRS8zBb7vBepkpwJJI+ix2y7DUgKHTPCx5711gKYsn7HXToFOtdLE7dYPFqhCwp2uWphc8rlS13IJ35WlWOM4Qk8j6xWE5whI/Xd53qLGCud8LFqPChmPHDjlEro5LEYqYlDI0Fo0DkJmCy2GgS8MyRFiz2efz161FcOoFy6JcN5DgUeHi2o34vw3B+yJ818d2D1jUkKxcGDfB6tBDA9Z+P1jcCgslI8j9BIMUrLBYLCFOYWvvBsuwCSJ2EQ3VGULMaYB18r+duW5t46au186wBI0pVoy4QxF7D9xvKCVBOFQPdoSVuCfALjqGsJSwqMI6nXb77+ca4clfvAMsqhWK+9xTxdGixc0tVANR+H9E628nWHqlCJSqc6TgjbBCU1RXrrvYCE/BY2dYBLeuq7QIq3Gz6gTLlTgn3qTq2EhgnfzdXBXXPOmD39x19rPcG4DFSiXk3BGJ7q8F1ul02L0oNR9t03Nk8/a0Mq2mleHfASu0xdW/ssMoD/PNHAjuaHI2bPXUnin1qi1Hk78FVswr2LzsH+5ALIuHH+tvwWrpL18yWotf6dEdeX+zWtbhL4EVrV6+PzssIznMZn56xtBPT2K+3adnDlf7yQirTjbJRvhfRrTG7T8bFsVyMYqwaN047xZhraLBj+vs+FxdI6oaLCaENaZc4h40IazRasZFGfabg7WM1qtNNng571UKEzz4xjJVKQbsXGT9A7Ae7v3cCL+HUS/sDsuQJEUlwuPtxg6eGzTD1/wI62n3Fnq5mHTPwQvDHKZQ8s3Dto8B6366zM7exyfIwtC8ByzxDg2ztg5daBb1WF2Z+OZgcbU6bBZJkqQHrEIGlGLPiorCqRDXNS1WbYU5Ukc3XZcI4ywLXRXW19m5f1fl5XtUHz32ggXlMSTF2WNbjal6nPfWkqvCWizPYrXavOZppx6wxKVbKpYkgSKjdl1Yk1/noPocnc6HtnHsCws5SrCA2QwVw+vCeggU7S/YzKO/A5X0AfaFBWysAmsCmyMefN0FPjTE/VxBtk+LOMAhWp7l7wNrApsN0ZKk228B1hl1Cuh6mDZ2Faj3OkCrSbd4rx5z6A3BAhCpCGGmh2XF5a4tR8A2aEsRKHlEvZ6qcWVYyMxbvBqlthJfEM8QMwdWW+NcjQdhFDp9gC1XLorTbl7i8CmzZ7sILKC154ya2xaKz593fkY9om2tYMDVHFwG4OmVXkli6iUtxIaj50cgIcundFnm5buapieiaVZWlsyuhZdQfgvpxfBaFqcSYaAYAisUWs6Bda5A4ppaLlF7p/ysa8jDEseFnnx733OpyyltBay2TANZG3X1u6XA4/qwhGeq3Fple1Ebd0Gx/zysjyMVWFH+VvhI+Wc6wiq3oYYrH8tONpFw38774lHZMRphxWneJEceF0ST8nbcYQdLG+fgYSVNZAkhjefpEr/HxCMsCSyD95novFdwhFUyw1iHEn8iThYlvUrUBFGH8WiG5TMFLsk0yLFJFmlgi7jl0yMjrKj4S+UfR9ehuwdPhwcLGl1heXAyPDvsRos6bHisJoCZVgexCZgMUmAHmYwySo38D+r0rTftvwO6AAAAAElFTkSuQmCC" alt="Feelim" />
+    </a>
+    <nav class="nav-links">
+      <a href="#como-funciona" data-i18n="nav_how">Cómo funciona</a>
+      <a href="#valor" data-i18n="nav_features">Funciones</a>
+      <a href="#precios" data-i18n="nav_pricing">Precios</a>
+    </nav>
+    <div class="nav-right">
+      <div class="lang-switch">
+        <button class="lang-btn" id="langBtn" aria-haspopup="true" aria-expanded="false">
+          <span id="langCurrent">ES</span>
+          <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+        <div class="lang-menu" id="langMenu">
+          <button data-lang="es">Español <span>ES</span></button>
+          <button data-lang="en">English <span>EN</span></button>
+          <button data-lang="fr">Français <span>FR</span></button>
+          <button data-lang="it">Italiano <span>IT</span></button>
+        </div>
+      </div>
+      <a class="btn btn-accent btn-sm btn-shine" href="https://getstarted.feelim.io/" target="_blank" rel="noopener" data-i18n="nav_cta">Empieza gratis</a>
+    </div>
+  </div>
+</header>
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <span class="orb orb-hero-a" aria-hidden="true"></span>
+    <span class="orb orb-hero-b" aria-hidden="true"></span>
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow" data-i18n="hero_eyebrow">CONTENIDO CON FUENTES REALES</span>
+        <h1 data-i18n-html="hero_title">Del <span class="mark">contenido genérico</span> al que tu audiencia <span class="mark-yellow">de verdad cree</span>.</h1>
+        <p class="hero-sub" data-i18n="hero_sub">Feelim convierte un tema en publicaciones con calidad verificable — con tus propias fuentes, papers e investigación web — y las programa, publica y mide por ti.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="https://getstarted.feelim.io/" target="_blank" rel="noopener" data-i18n="hero_cta_primary">Crear mi primer contenido</a>
+          <a class="btn btn-ghost" href="#como-funciona" data-i18n="hero_cta_secondary">Ver cómo funciona</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hstat"><b>10min → 3min</b><span data-i18n="hero_stat_1">por publicación</span></div>
+          <div class="hstat"><b class="count">3</b><span data-i18n="hero_stat_2">alternativas por tema</span></div>
+          <div class="hstat"><b class="count">500+</b><span data-i18n="hero_stat_3">publicaciones/mes (plan agencia)</span></div>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="badge-models">✦ <span data-i18n="hero_badge_models">Claude · OpenAI · Gemini, orquestados</span></div>
+        <div class="panel panel-main">
+          <div class="li-badge" aria-hidden="true">in</div>
+          <div class="li-post-head">
+            <div class="li-avatar">
+              <svg viewBox="0 -14 120 154" xmlns="http://www.w3.org/2000/svg">
+                <rect x="10" y="-8" width="100" height="116" rx="24" fill="#0a0a0a"/>
+                <circle cx="46" cy="38" r="6.5" fill="#ffffff"/>
+                <circle cx="71" cy="33" r="8.2" fill="#ffffff"/>
+              </svg>
+            </div>
+            <div class="li-name">
+              <b>Feelim</b>
+              <span class="li-meta">2h · 🌐</span>
+            </div>
+          </div>
+          <div class="panel-topic"><span class="dot"></span><span data-i18n="mock_topic">Tema: impacto de la IA en marketing B2B</span></div>
+          <div class="alt-row">
+            <div class="alt picked" data-i18n="mock_alt1">Carrusel</div>
+            <div class="alt" data-i18n="mock_alt2">Artículo</div>
+            <div class="alt" data-i18n="mock_alt3">Video</div>
+          </div>
+          <div class="rating-block">
+            <div>
+              <div class="rating-row"><span data-i18n="mock_quality">Calidad</span><span>92/100</span></div>
+              <div class="bar"><i data-w="92%"></i></div>
+            </div>
+            <div>
+              <div class="rating-row"><span data-i18n="mock_clarity">Claridad</span><span>88/100</span></div>
+              <div class="bar"><i data-w="88%"></i></div>
+            </div>
+          </div>
+          <div class="keywords">
+            <span class="kw">#B2B</span><span class="kw">#IA</span><span class="kw">#Fuentes</span>
+          </div>
+          <div class="li-reactions">
+            <div class="stack" aria-hidden="true">
+              <i class="r-like">👍</i><i class="r-heart">❤</i><i class="r-clap">👏</i>
+            </div>
+            <span class="count">128</span>
+            <div class="li-metrics">
+              <span>💬 <b class="count">34</b></span>
+              <span>🔁 <b class="count">19</b></span>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-cal">
+          <div class="cal-head"><span data-i18n="mock_calendar">Calendario</span><span>W38</span></div>
+          <div class="cal-grid">
+            <span></span><span class="on"></span><span></span><span class="mid"></span><span></span><span class="on"></span><span></span>
+            <span class="mid"></span><span></span><span class="on"></span><span></span><span></span><span class="mid"></span><span></span>
+          </div>
+        </div>
+        <div class="panel panel-score">
+          <b class="count">+41%</b>
+          <span data-i18n="mock_engagement">engagement medido</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAIN -->
+  <section class="pain">
+    <div class="wrap">
+      <span class="eyebrow reveal" data-i18n="pain_eyebrow">EL PROBLEMA</span>
+      <h2 class="reveal" data-i18n="pain_title">El "AI slop" ya le está costando credibilidad a tu marca.</h2>
+      <p class="pain-body reveal" data-i18n="pain_body">Lo comprobamos: el contenido generado sin calidad ni respaldo daña la percepción de una marca. Feelim toma el camino contrario — puedes traer tus propias fuentes o dejar que Feelim consulte la web para profundizar de verdad en el tema antes de escribir una sola línea.</p>
+
+      <div class="compare" data-stagger>
+        <div class="compare-card compare-bad tilt reveal-left">
+          <h3><span class="tag-x">✕</span> <span data-i18n="pain_bad_title">Contenido genérico de IA</span></h3>
+          <ul>
+            <li><span class="tag-x">✕</span><span data-i18n="pain_bad_1">Datos inventados o desactualizados, sin fuente citable</span></li>
+            <li><span class="tag-x">✕</span><span data-i18n="pain_bad_2">El mismo tono plano en cada publicación</span></li>
+            <li><span class="tag-x">✕</span><span data-i18n="pain_bad_3">Horas revisando antes de publicar algo presentable</span></li>
+          </ul>
+        </div>
+        <div class="compare-card compare-good tilt reveal-right">
+          <h3><span class="tag-ok">✓</span> <span data-i18n="pain_good_title">Contenido con Feelim</span></h3>
+          <ul>
+            <li><span class="tag-ok">✓</span><span data-i18n="pain_good_1">Tus fuentes, papers o investigación web como base</span></li>
+            <li><span class="tag-ok">✓</span><span data-i18n="pain_good_2">Puntuación de calidad y claridad antes de publicar</span></li>
+            <li><span class="tag-ok">✓</span><span data-i18n="pain_good_3">Listo para compartir en minutos, no en horas</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUE 2: papers / team -->
+  <section class="value" id="valor">
+    <div class="wrap value-row">
+      <div class="value-copy reveal-left">
+        <span class="eyebrow" data-i18n="v2_eyebrow">DE LA CIENCIA AL FEED</span>
+        <h2 data-i18n="v2_title">Convierte papers científicos en contenido que tu equipo sí comparte.</h2>
+        <p data-i18n="v2_body">Sube el estudio, el informe o el paper que quieres divulgar. Feelim reduce el esfuerzo de traducirlo a un lenguaje que tu equipo de marketing pueda usar de inmediato — y le da a tus colegas algo que de verdad quieren compartir.</p>
+      </div>
+      <div class="value-visual tilt reveal-right">
+        <div class="doc-mock">
+          <div class="doc-head"><span class="sq">📄</span><span data-i18n="mock_paper">paper_transformers_marketing.pdf</span></div>
+          <div class="doc-lines"><i></i><i></i><i></i></div>
+          <div class="share-row">
+            <div class="avatar"></div><div class="avatar"></div><div class="avatar"></div>
+            <span style="font-size:12px;color:var(--ink-soft);font-weight:700;margin-left:6px" data-i18n="mock_shared">Compartido con 3 colegas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUE 3: multi-model -->
+  <section class="value">
+    <div class="wrap value-row rev">
+      <div class="value-copy reveal-right">
+        <span class="eyebrow" data-i18n="v3_eyebrow">INTELIGENCIA COMBINADA</span>
+        <h2 data-i18n="v3_title">Usas Claude, ChatGPT, Gemini... nosotros los integramos con inteligencia.</h2>
+        <p data-i18n="v3_body">No apostamos por un solo modelo. Feelim orquesta varios motores de IA y usa lo mejor de cada uno según la tarea — investigar, redactar, verificar o generar media — para que el resultado sea mejor que cualquiera por separado.</p>
+        <div class="model-chips">
+          <span class="chip claude"><i></i>Claude</span>
+          <span class="chip openai"><i></i>OpenAI</span>
+          <span class="chip gemini"><i></i>Gemini</span>
+          <span class="chip feelim"><i></i>Feelim</span>
+        </div>
+      </div>
+      <div class="value-visual tilt reveal-left">
+        <div class="clock-visual" style="justify-content:flex-start;gap:14px;flex-wrap:wrap;">
+          <span class="chip claude" style="width:100%">Investigación <i></i></span>
+          <span class="chip openai" style="width:100%">Redacción <i></i></span>
+          <span class="chip gemini" style="width:100%">Generación de media <i></i></span>
+          <span class="chip feelim" style="width:100%">✦ <span data-i18n="mock_best">Mejor resultado combinado</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUE 4: auto-publish + metrics -->
+  <section class="value">
+    <div class="wrap value-row">
+      <div class="value-copy reveal-left">
+        <span class="eyebrow" data-i18n="v4_eyebrow">PUBLICA Y APRENDE</span>
+        <h2 data-i18n="v4_title">Publicación automática con tu marca, y recomendaciones para iterar.</h2>
+        <p data-i18n="v4_body">Feelim publica con calidad y aplica tu identidad de marca en cada pieza. Explora resultados, mide el impacto real y, después del primer mes, recibe métricas y recomendaciones concretas para mejorar tu próximo contenido.</p>
+      </div>
+      <div class="value-visual tilt reveal-right">
+        <div class="publish-mock">
+          <div class="pm-top">
+            <span style="font-weight:700;font-size:13px" data-i18n="mock_published">Publicado con tu marca</span>
+            <span class="pm-pill" data-i18n="mock_live">EN VIVO</span>
+          </div>
+          <div class="metric-grid" data-stagger>
+            <div class="metric"><b class="count">+41%</b><span data-i18n="mock_metric1">Engagement</span></div>
+            <div class="metric"><b class="count">2.3x</b><span data-i18n="mock_metric2">Alcance</span></div>
+            <div class="metric"><b class="count">92</b><span data-i18n="mock_metric3">Puntaje de calidad</span></div>
+            <div class="metric"><b class="count">+18</b><span data-i18n="mock_metric4">Recomendaciones del mes</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUE 5: time -->
+  <section class="value">
+    <div class="wrap value-row rev">
+      <div class="value-copy reveal-right">
+        <span class="eyebrow" data-i18n="v5_eyebrow">TIEMPO RECUPERADO</span>
+        <h2 data-i18n="v5_title">De 10 minutos a solo 3 para crear contenido de valor.</h2>
+        <p data-i18n="v5_body">Cada publicación te costaba investigación, redacción, revisión y programación por separado. Feelim comprime ese proceso completo sin sacrificar calidad, para que tu equipo publique más y piense más.</p>
+      </div>
+      <div class="value-visual tilt reveal-left">
+        <div class="clock-visual">
+          <div class="clock"><b>10min</b></div>
+          <span class="arrow-big">→</span>
+          <div class="clock small"><b>3min</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how" id="como-funciona">
+    <div class="wrap">
+      <div class="how-head reveal">
+        <span class="eyebrow" data-i18n="how_eyebrow">CÓMO FUNCIONA</span>
+        <h2 data-i18n="how_title">Del tema a la publicación, en cinco pasos.</h2>
+      </div>
+      <div class="steps" data-stagger>
+        <div class="step tilt reveal-scale"><span class="n">01</span><h4 data-i18n="how_1_title">Da el tema</h4><p data-i18n="how_1_body">Escribe el tema o sube tus fuentes y papers.</p></div>
+        <div class="step tilt reveal-scale">
+          <div class="mascot-badge badge-thinking" aria-hidden="true">
+            <div class="feelim-anim-thinking">
+              <div class="doc-lines">
+                <div class="doc-line l1" style="--w:78%"></div>
+                <div class="doc-line l2" style="--w:60%"></div>
+                <div class="doc-line l3" style="--w:85%"></div>
+                <div class="doc-line l4" style="--w:45%"></div>
+                <div class="doc-line l5" style="--w:70%"></div>
+                <div class="doc-line l6" style="--w:55%"></div>
+                <div class="doc-line l7" style="--w:80%"></div>
+                <div class="doc-line l8" style="--w:40%"></div>
+              </div>
+              <div class="logo-wrap">
+                <svg class="mark" viewBox="0 -14 120 154" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="10" y="-8" width="100" height="116" rx="24" fill="#2DEA89"/>
+                  <path d="M 22 36 C 22 18, 38 9, 60 9 C 82 9, 98 18, 98 36 C 98 54, 85 64, 68 66.5 C 66 69, 64 76, 58 82 C 60 74, 59 69, 56 66.5 C 34 64, 22 54, 22 36 Z" fill="#0a0a0a"/>
+                  <circle class="eye eye-l" cx="46" cy="38" r="6.5" fill="#ffffff"/>
+                  <circle class="eye eye-r" cx="71" cy="33" r="8.2" fill="#ffffff"/>
+                  <rect x="10" y="96" width="100" height="34" rx="14" fill="#0a0a0a"/>
+                  <circle class="dot dot-1" cx="38" cy="113" r="5" fill="#ffffff"/>
+                  <circle class="dot dot-2" cx="60" cy="113" r="5" fill="#ffffff"/>
+                  <circle class="dot dot-3" cx="82" cy="113" r="5" fill="#ffffff"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <span class="n">02</span><h4 data-i18n="how_2_title">Recibe 3 alternativas</h4><p data-i18n="how_2_body">Feelim investiga y propone tres enfoques distintos.</p>
+        </div>
+        <div class="step tilt reveal-scale">
+          <div class="mascot-badge badge-creating" aria-hidden="true">
+            <div class="feelim-anim-creating">
+              <svg class="canvas-svg" viewBox="0 0 280 360" xmlns="http://www.w3.org/2000/svg">
+                <g transform="translate(30,44) scale(10.5)">
+                  <rect class="icon-part icon-rect" x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                  <circle class="icon-part icon-circle" cx="8.5" cy="8.5" r="1.5"/>
+                  <polyline class="icon-part icon-mountain" points="21 15 16 10 5 21"/>
+                </g>
+              </svg>
+              <div class="logo-wrap">
+                <svg class="mark" viewBox="0 -14 120 154" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="10" y="-8" width="100" height="116" rx="24" fill="#2DEA89"/>
+                  <path d="M 22 36 C 22 18, 38 9, 60 9 C 82 9, 98 18, 98 36 C 98 54, 85 64, 68 66.5 C 66 69, 64 76, 58 82 C 60 74, 59 69, 56 66.5 C 34 64, 22 54, 22 36 Z" fill="#0a0a0a"/>
+                  <circle class="eye eye-l" cx="46" cy="38" r="6.5" fill="#ffffff"/>
+                  <circle class="eye eye-r" cx="71" cy="33" r="8.2" fill="#ffffff"/>
+                  <rect x="10" y="96" width="100" height="34" rx="14" fill="#0a0a0a"/>
+                  <circle class="dot dot-1" cx="38" cy="113" r="5" fill="#ffffff"/>
+                  <circle class="dot dot-2" cx="60" cy="113" r="5" fill="#ffffff"/>
+                  <circle class="dot dot-3" cx="82" cy="113" r="5" fill="#ffffff"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <span class="n">03</span><h4 data-i18n="how_3_title">Elige el formato</h4><p data-i18n="how_3_body">Escoge la media que más te guste: texto, carrusel o video.</p>
+        </div>
+        <div class="step tilt reveal-scale"><span class="n">04</span><h4 data-i18n="how_4_title">Programa y publica</h4><p data-i18n="how_4_body">Con tu marca aplicada, listo para tus perfiles.</p></div>
+        <div class="step tilt reveal-scale"><span class="n">05</span><h4 data-i18n="how_5_title">Explora, mide, itera</h4><p data-i18n="how_5_body">Métricas y recomendaciones para el próximo contenido.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing" id="precios">
+    <div class="wrap">
+      <div class="pricing-head reveal">
+        <span class="eyebrow" data-i18n="pricing_eyebrow">PRECIOS</span>
+        <h2 data-i18n="pricing_title">Un plan para cada etapa de tu contenido.</h2>
+        <p data-i18n="pricing_sub">Cancela cuando quieras. Sin permanencia.</p>
+      </div>
+      <div class="plans" data-stagger>
+        <div class="plan tilt reveal-scale" data-tilt-base="">
+          <h3 data-i18n="plan1_name">Básico</h3>
+          <div class="price"><b>$35</b><span data-i18n="plan_period">/ mes</span></div>
+          <p class="plan-desc" data-i18n="plan1_desc">Para empezar a publicar con calidad.</p>
+          <ul>
+            <li><b class="count">50</b> <span data-i18n="plan1_f1">publicaciones al mes</span></li>
+            <li><b>✓</b> <span data-i18n="plan1_f2">Conecta tu perfil personal y de empresa</span></li>
+            <li><b>✓</b> <span data-i18n="plan1_f3">3 alternativas por tema</span></li>
+            <li><b>✓</b> <span data-i18n="plan1_f4">Programación y publicación automática</span></li>
+          </ul>
+          <a class="btn btn-ghost" href="https://checkout.wompi.co/l/np0OXg" target="_blank" data-wompi-plan="basic" data-i18n="plan_cta">Empezar</a>
+        </div>
+        <div class="plan featured tilt reveal-scale" data-tilt-base="translateY(-10px)">
+          <span class="plan-badge" data-i18n="plan2_badge">Más elegido</span>
+          <h3 data-i18n="plan2_name">Premium</h3>
+          <div class="price"><b>$75</b><span data-i18n="plan_period">/ mes</span></div>
+          <p class="plan-desc" data-i18n="plan2_desc">Para equipos que publican cada semana.</p>
+          <ul>
+            <li><b class="count">100</b> <span data-i18n="plan2_f1">publicaciones al mes</span></li>
+            <li><b>✓</b> <span data-i18n="plan2_f2">Analítica histórica de tu contenido</span></li>
+            <li><b>✓</b> <span data-i18n="plan2_f3">Acceso anticipado a nuevas funciones</span></li>
+            <li><b>✓</b> <span data-i18n="plan2_f4">Todo lo del plan Básico</span></li>
+          </ul>
+          <a class="btn btn-accent btn-shine" href="https://checkout.wompi.co/l/PwbFLR" target="_blank" data-wompi-plan="premium" data-i18n="plan_cta">Empezar</a>
+        </div>
+        <div class="plan tilt reveal-scale" data-tilt-base="">
+          <h3 data-i18n="plan3_name">Agencias</h3>
+          <div class="price"><b>$350</b><span data-i18n="plan_period">/ mes</span></div>
+          <p class="plan-desc" data-i18n="plan3_desc">Para agencias y equipos con varias marcas.</p>
+          <ul>
+            <li><b class="count">500</b> <span data-i18n="plan3_f1">publicaciones al mes, calidad premium</span></li>
+            <li><b>✓</b> <span data-i18n="plan3_f2">Soporte MCP para integrarte con tu stack</span></li>
+            <li><b>✓</b> <span data-i18n="plan3_f3">Gestión multi-marca</span></li>
+            <li><b>✓</b> <span data-i18n="plan3_f4">Todo lo del plan Premium</span></li>
+          </ul>
+          <a class="btn btn-ghost" href="https://checkout.wompi.co/l/7O3i0e" target="_blank" data-wompi-plan="agency" data-i18n="plan_cta">Empezar</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final">
+    <span class="orb orb-final-a" aria-hidden="true"></span>
+    <span class="orb orb-final-b" aria-hidden="true"></span>
+    <div class="wrap final-inner reveal">
+      <h2 data-i18n="final_title">Tu próximo contenido de valor toma 3 minutos.</h2>
+      <p data-i18n="final_sub">Da el tema, elige la alternativa que más te guste, y deja que Feelim programe, publique e impacte por ti.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-accent btn-shine" href="https://getstarted.feelim.io/" target="_blank" rel="noopener" data-i18n="final_cta">Crear mi primer contenido</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- WOMPI: payment confirmation modal (shown on the main tab after a successful checkout) -->
+<div class="wompi-modal" id="wompiModal" hidden>
+  <div class="wompi-modal-card">
+    <button class="wompi-modal-close" id="wompiModalClose" aria-label="Close">✕</button>
+    <div class="wompi-check" aria-hidden="true">✓</div>
+    <h3 data-i18n="wompi_success_title">¡Pago exitoso!</h3>
+    <p data-i18n="wompi_success_body">Gracias por tu pago, ya puedes ingresar.</p>
+    <a class="btn btn-accent btn-shine" href="https://getstarted.feelim.io/" target="_blank" rel="noopener" data-i18n="wompi_success_cta">Ingresar</a>
+    <button class="wompi-modal-dismiss" id="wompiModalDismiss" data-i18n="wompi_success_close">Cerrar</button>
+  </div>
+</div>
+
+<!-- WOMPI: brief message shown only inside the payment popup right before it auto-closes -->
+<div class="wompi-popup-msg" id="wompiPopupMsg" hidden>
+  <div class="wompi-check" aria-hidden="true">✓</div>
+  <p data-i18n="wompi_popup_msg">Pago recibido. Cerrando esta ventana…</p>
+</div>
+
+<footer>
+  <div class="wrap foot-row">
+    <div class="foot-brand">
+      <img class="brand-logo brand-logo-light" src="data:image/png;base64,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" alt="Feelim" />
+      <img class="brand-logo brand-logo-dark" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAABYCAMAAAB4ZzokAAAApVBMVEW6+dgs6on////////////////+/v7///////////////8t6on///////////////////8t6okt6on///8t6okt6oks6Ygt6okt6okt6okt6okt6okt6okt6okt6Ykt6okt6okt6oks6Ykt6Ygt6okt6okt6okt6Ygt6okt6Ygt6Ygs6okt6oks6okt6okt6Ykt6okt6oks6oks6okt6on///8t6okVKvcDAAAANXRSTlMBCJSiFCTkMtTzdmSERGPCVPJutPYVJebB1YGWRrZToe/6NyE9MnRCk34f0F2dEVfisXevj/0/IXMAAAgFSURBVHja7ZzpgqI4EIAN5CBIAIVWPNvpc6Z37l19/0db7gQIEKF17IH65TDRwEdVUld6MhlllEvK3eu0g2zvBslqvTqdL/7q82KAsL7MTp3EXw9Pt0CjXs1W/4SykvJcPgwO1tNSqjazQ/B5vn18vIvlbbGdblYH/1Nh0NfBwZpWtWb2M/jy462qg8/zXUHHpoOH9WkZrF9rRz+vg8MIK5Of99PmXW7xEvgjrEgO9/v2Le55vRxhnU7B9FHJM9sHg4e1XCu7mc/BsGF9CvZA/VuLe3/AsPzdedHLY0hrqLCWm3Njl+fdp4HCWn45P87broYJ69ApJl7vhwjL//bW5ZuLxRBh7R4noyjCCp5GCqqwVluVYUDRCUOkRRD8yLA27RgAsS3LRSo/5xlton1gWNv2ZRq4Dj0eqecqaJdxbBPn/Z8BmlxsQXOhG10g7zeRgtPAUgIOuVFYhPKfp9wAmI7DC9gxr2j5UM/uwwK3D+tI+DtOL2PterRgDsBDHwgW4rdC3YuxIa7LxFeB6EeEBSxxTnAZVkgLDZ06wmLONUv/SLA84Roll9ErLZnY4JoLrPReqDn5OLAgFmHZF4HFaNXkiJPMqKBYg4LFLd1g/GK8B2NNRZdvxwydi5sh0CSwokXftonS/luEhasOvGNeCZYmXDPgFWGpSwEW1WFVwHVgTYjgOpgXWbImNlV3E9phtceBACLm2qkwVIsSIJQPc8vRuNwpdTF/Z40pAkmSACglDqBe2Q1rZ7nrDSuM0L3CQuyYTPZgkFmOCMTQbQTaYIUhbfTb1NDy947ypEjy9fhNheGjy/jPgeSa6bL2hYfosZ9lt5N9eu0LC1nV/cCwSHnqcIOh1X3CRi2wwt83dV3XuMsIPSdbOSPDga6WvQLsmcm0gJg6zt6cZreZF4pCdaKghb/3PWExj0p2y/BFwVJOQbrFCrtzHazIyguxiDCMJe63qNThUGgXNBjr77WN3n/tBQu4dW4GLqQJis8k/rpHWmGV9EAYZsOyumIT8HUunwO9C6uHYNoLllvvkmELCqxo3TCa5Yy6wLLsyu9ihpzKJPq7wPo9a4clcR3KSTI5LZfbIG1ycGFD1oFxIVVYepXL0bMkt8LOS/5J5Tk4tcI6YqciKS3kNbr5GJX3f7loQMkpxaACS/oOJJNRS8zBb7vBepkpwJJI+ix2y7DUgKHTPCx5711gKYsn7HXToFOtdLE7dYPFqhCwp2uWphc8rlS13IJ35WlWOM4Qk8j6xWE5whI/Xd53qLGCud8LFqPChmPHDjlEro5LEYqYlDI0Fo0DkJmCy2GgS8MyRFiz2efz161FcOoFy6JcN5DgUeHi2o34vw3B+yJ818d2D1jUkKxcGDfB6tBDA9Z+P1jcCgslI8j9BIMUrLBYLCFOYWvvBsuwCSJ2EQ3VGULMaYB18r+duW5t46au186wBI0pVoy4QxF7D9xvKCVBOFQPdoSVuCfALjqGsJSwqMI6nXb77+ca4clfvAMsqhWK+9xTxdGixc0tVANR+H9E628nWHqlCJSqc6TgjbBCU1RXrrvYCE/BY2dYBLeuq7QIq3Gz6gTLlTgn3qTq2EhgnfzdXBXXPOmD39x19rPcG4DFSiXk3BGJ7q8F1ul02L0oNR9t03Nk8/a0Mq2mleHfASu0xdW/ssMoD/PNHAjuaHI2bPXUnin1qi1Hk78FVswr2LzsH+5ALIuHH+tvwWrpL18yWotf6dEdeX+zWtbhL4EVrV6+PzssIznMZn56xtBPT2K+3adnDlf7yQirTjbJRvhfRrTG7T8bFsVyMYqwaN047xZhraLBj+vs+FxdI6oaLCaENaZc4h40IazRasZFGfabg7WM1qtNNng571UKEzz4xjJVKQbsXGT9A7Ae7v3cCL+HUS/sDsuQJEUlwuPtxg6eGzTD1/wI62n3Fnq5mHTPwQvDHKZQ8s3Dto8B6366zM7exyfIwtC8ByzxDg2ztg5daBb1WF2Z+OZgcbU6bBZJkqQHrEIGlGLPiorCqRDXNS1WbYU5Ukc3XZcI4ywLXRXW19m5f1fl5XtUHz32ggXlMSTF2WNbjal6nPfWkqvCWizPYrXavOZppx6wxKVbKpYkgSKjdl1Yk1/noPocnc6HtnHsCws5SrCA2QwVw+vCeggU7S/YzKO/A5X0AfaFBWysAmsCmyMefN0FPjTE/VxBtk+LOMAhWp7l7wNrApsN0ZKk228B1hl1Cuh6mDZ2Faj3OkCrSbd4rx5z6A3BAhCpCGGmh2XF5a4tR8A2aEsRKHlEvZ6qcWVYyMxbvBqlthJfEM8QMwdWW+NcjQdhFDp9gC1XLorTbl7i8CmzZ7sILKC154ya2xaKz593fkY9om2tYMDVHFwG4OmVXkli6iUtxIaj50cgIcundFnm5buapieiaVZWlsyuhZdQfgvpxfBaFqcSYaAYAisUWs6Bda5A4ppaLlF7p/ysa8jDEseFnnx733OpyyltBay2TANZG3X1u6XA4/qwhGeq3Fple1Ebd0Gx/zysjyMVWFH+VvhI+Wc6wiq3oYYrH8tONpFw38774lHZMRphxWneJEceF0ST8nbcYQdLG+fgYSVNZAkhjefpEr/HxCMsCSyD95novFdwhFUyw1iHEn8iThYlvUrUBFGH8WiG5TMFLsk0yLFJFmlgi7jl0yMjrKj4S+UfR9ehuwdPhwcLGl1heXAyPDvsRos6bHisJoCZVgexCZgMUmAHmYwySo38D+r0rTftvwO6AAAAAElFTkSuQmCC" alt="Feelim" />
+      <small data-i18n="footer_tag">Contenido con calidad, en minutos.</small>
+    </div>
+    <small data-i18n="footer_rights">© 2026 Feelim. Todos los derechos reservados.</small>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const T = {
+    es: {
+      nav_how:"Cómo funciona", nav_features:"Funciones", nav_pricing:"Precios", nav_cta:"Empieza gratis",
+      hero_eyebrow:"CONTENIDO CON FUENTES REALES",
+      hero_title:'Del <span class="mark">contenido genérico</span> al que tu audiencia <span class="mark-yellow">de verdad cree</span>.',
+      hero_sub:"Feelim convierte un tema en publicaciones con calidad verificable — con tus propias fuentes, papers e investigación web — y las programa, publica y mide por ti.",
+      hero_cta_primary:"Crear mi primer contenido", hero_cta_secondary:"Ver cómo funciona",
+      hero_stat_1:"por publicación", hero_stat_2:"alternativas por tema", hero_stat_3:"publicaciones/mes (plan agencia)",
+      hero_badge_models:"Claude · OpenAI · Gemini, orquestados",
+      mock_topic:"Tema: impacto de la IA en marketing B2B", mock_alt1:"Carrusel", mock_alt2:"Artículo", mock_alt3:"Video",
+      mock_quality:"Calidad", mock_clarity:"Claridad", mock_calendar:"Calendario", mock_engagement:"engagement medido",
+      mock_paper:"paper_transformers_marketing.pdf", mock_shared:"Compartido con 3 colegas", mock_best:"Mejor resultado combinado",
+      mock_published:"Publicado con tu marca", mock_live:"EN VIVO",
+      mock_metric1:"Engagement", mock_metric2:"Alcance", mock_metric3:"Puntaje de calidad", mock_metric4:"Recomendaciones del mes",
+      pain_eyebrow:"EL PROBLEMA", pain_title:'El "AI slop" ya le está costando credibilidad a tu marca.',
+      pain_body:"Lo comprobamos: el contenido generado sin calidad ni respaldo daña la percepción de una marca. Feelim toma el camino contrario — puedes traer tus propias fuentes o dejar que Feelim consulte la web para profundizar de verdad en el tema antes de escribir una sola línea.",
+      pain_bad_title:"Contenido genérico de IA", pain_bad_1:"Datos inventados o desactualizados, sin fuente citable", pain_bad_2:"El mismo tono plano en cada publicación", pain_bad_3:"Horas revisando antes de publicar algo presentable",
+      pain_good_title:"Contenido con Feelim", pain_good_1:"Tus fuentes, papers o investigación web como base", pain_good_2:"Puntuación de calidad y claridad antes de publicar", pain_good_3:"Listo para compartir en minutos, no en horas",
+      v2_eyebrow:"DE LA CIENCIA AL FEED", v2_title:"Convierte papers científicos en contenido que tu equipo sí comparte.",
+      v2_body:"Sube el estudio, el informe o el paper que quieres divulgar. Feelim reduce el esfuerzo de traducirlo a un lenguaje que tu equipo de marketing pueda usar de inmediato — y le da a tus colegas algo que de verdad quieren compartir.",
+      v3_eyebrow:"INTELIGENCIA COMBINADA", v3_title:"Usas Claude, ChatGPT, Gemini... nosotros los integramos con inteligencia.",
+      v3_body:"No apostamos por un solo modelo. Feelim orquesta varios motores de IA y usa lo mejor de cada uno según la tarea — investigar, redactar, verificar o generar media — para que el resultado sea mejor que cualquiera por separado.",
+      mock_best2:"Mejor resultado combinado",
+      v4_eyebrow:"PUBLICA Y APRENDE", v4_title:"Publicación automática con tu marca, y recomendaciones para iterar.",
+      v4_body:"Feelim publica con calidad y aplica tu identidad de marca en cada pieza. Explora resultados, mide el impacto real y, después del primer mes, recibe métricas y recomendaciones concretas para mejorar tu próximo contenido.",
+      v5_eyebrow:"TIEMPO RECUPERADO", v5_title:"De 10 minutos a solo 3 para crear contenido de valor.",
+      v5_body:"Cada publicación te costaba investigación, redacción, revisión y programación por separado. Feelim comprime ese proceso completo sin sacrificar calidad, para que tu equipo publique más y piense más.",
+      how_eyebrow:"CÓMO FUNCIONA", how_title:"Del tema a la publicación, en cinco pasos.",
+      how_1_title:"Da el tema", how_1_body:"Escribe el tema o sube tus fuentes y papers.",
+      how_2_title:"Recibe 3 alternativas", how_2_body:"Feelim investiga y propone tres enfoques distintos.",
+      how_3_title:"Elige el formato", how_3_body:"Escoge la media que más te guste: texto, carrusel o video.",
+      how_4_title:"Programa y publica", how_4_body:"Con tu marca aplicada, listo para tus perfiles.",
+      how_5_title:"Explora, mide, itera", how_5_body:"Métricas y recomendaciones para el próximo contenido.",
+      pricing_eyebrow:"PRECIOS", pricing_title:"Un plan para cada etapa de tu contenido.", pricing_sub:"Cancela cuando quieras. Sin permanencia.",
+      plan_period:"/ mes", plan_cta:"Empezar",
+      plan1_name:"Básico", plan1_desc:"Para empezar a publicar con calidad.", plan1_f1:"publicaciones al mes", plan1_f2:"Conecta tu perfil personal y de empresa", plan1_f3:"3 alternativas por tema", plan1_f4:"Programación y publicación automática",
+      plan2_badge:"Más elegido", plan2_name:"Premium", plan2_desc:"Para equipos que publican cada semana.", plan2_f1:"publicaciones al mes", plan2_f2:"Analítica histórica de tu contenido", plan2_f3:"Acceso anticipado a nuevas funciones", plan2_f4:"Todo lo del plan Básico",
+      plan3_name:"Agencias", plan3_desc:"Para agencias y equipos con varias marcas.", plan3_f1:"publicaciones al mes, calidad premium", plan3_f2:"Soporte MCP para integrarte con tu stack", plan3_f3:"Gestión multi-marca", plan3_f4:"Todo lo del plan Premium",
+      final_title:"Tu próximo contenido de valor toma 3 minutos.", final_sub:"Da el tema, elige la alternativa que más te guste, y deja que Feelim programe, publique e impacte por ti.", final_cta:"Crear mi primer contenido",
+      footer_tag:"Contenido con calidad, en minutos.", footer_rights:"© 2026 Feelim. Todos los derechos reservados.",
+      wompi_success_title:"¡Pago exitoso!", wompi_success_body:"Gracias por tu pago, ya puedes ingresar.", wompi_success_cta:"Ingresar", wompi_success_close:"Cerrar", wompi_popup_msg:"Pago recibido. Cerrando esta ventana…"
+    },
+    en: {
+      nav_how:"How it works", nav_features:"Features", nav_pricing:"Pricing", nav_cta:"Start for free",
+      hero_eyebrow:"CONTENT BACKED BY REAL SOURCES",
+      hero_title:'From <span class="mark">generic content</span> to what your audience <span class="mark-yellow">actually believes</span>.',
+      hero_sub:"Feelim turns a topic into publish-ready content with verifiable quality — using your own sources, papers, or live web research — then schedules, publishes and measures it for you.",
+      hero_cta_primary:"Create my first content", hero_cta_secondary:"See how it works",
+      hero_stat_1:"per post", hero_stat_2:"alternatives per topic", hero_stat_3:"posts/month (agency plan)",
+      hero_badge_models:"Claude · OpenAI · Gemini, orchestrated",
+      mock_topic:"Topic: AI's impact on B2B marketing", mock_alt1:"Carousel", mock_alt2:"Article", mock_alt3:"Video",
+      mock_quality:"Quality", mock_clarity:"Clarity", mock_calendar:"Calendar", mock_engagement:"measured engagement",
+      mock_paper:"paper_transformers_marketing.pdf", mock_shared:"Shared with 3 teammates", mock_best:"Best combined output",
+      mock_published:"Published on-brand", mock_live:"LIVE",
+      mock_metric1:"Engagement", mock_metric2:"Reach", mock_metric3:"Quality score", mock_metric4:"Recommendations this month",
+      pain_eyebrow:"THE PROBLEM", pain_title:'"AI slop" is already costing your brand credibility.',
+      pain_body:"We proved it: low-quality, unsupported AI content damages how a brand is perceived. Feelim goes the opposite way — bring your own sources, or let Feelim research the web to actually understand the topic before writing a single line.",
+      pain_bad_title:"Generic AI content", pain_bad_1:"Invented or outdated facts, with no citable source", pain_bad_2:"The same flat tone in every post", pain_bad_3:"Hours of editing before it's fit to publish",
+      pain_good_title:"Content made with Feelim", pain_good_1:"Your sources, papers or web research as the base", pain_good_2:"A quality and clarity score before you publish", pain_good_3:"Share-ready in minutes, not hours",
+      v2_eyebrow:"FROM SCIENCE TO THE FEED", v2_title:"Turn scientific papers into content your team actually shares.",
+      v2_body:"Upload the study, report or paper you want to spread. Feelim reduces the effort of translating it into language your marketing team can use right away — giving your colleagues something they genuinely want to share.",
+      v3_eyebrow:"COMBINED INTELLIGENCE", v3_title:"You use Claude, ChatGPT, Gemini... we integrate them with intelligence.",
+      v3_body:"We don't bet on a single model. Feelim orchestrates several AI engines and uses the best of each for the task at hand — research, writing, verification or media generation — so the result beats any one model alone.",
+      v4_eyebrow:"PUBLISH AND LEARN", v4_title:"Automatic publishing with your brand, and recommendations to iterate.",
+      v4_body:"Feelim publishes with quality and applies your brand identity to every piece. Explore results, measure real impact, and after the first month get concrete metrics and recommendations to improve your next content.",
+      v5_eyebrow:"TIME RECLAIMED", v5_title:"From 10 minutes down to just 3 to create content that matters.",
+      v5_body:"Every post used to cost you research, writing, review and scheduling as separate steps. Feelim compresses that entire process without sacrificing quality, so your team publishes more and thinks more.",
+      how_eyebrow:"HOW IT WORKS", how_title:"From topic to published post, in five steps.",
+      how_1_title:"Give the topic", how_1_body:"Type a topic or upload your sources and papers.",
+      how_2_title:"Get 3 alternatives", how_2_body:"Feelim researches and proposes three different angles.",
+      how_3_title:"Pick the format", how_3_body:"Choose the media you like best: text, carousel or video.",
+      how_4_title:"Schedule and publish", how_4_body:"On-brand and ready for your profiles.",
+      how_5_title:"Explore, measure, iterate", how_5_body:"Metrics and recommendations for your next content.",
+      pricing_eyebrow:"PRICING", pricing_title:"A plan for every stage of your content.", pricing_sub:"Cancel anytime. No commitment.",
+      plan_period:"/ month", plan_cta:"Get started",
+      plan1_name:"Basic", plan1_desc:"To start publishing with quality.", plan1_f1:"posts per month", plan1_f2:"Connect your personal and business profile", plan1_f3:"3 alternatives per topic", plan1_f4:"Automatic scheduling and publishing",
+      plan2_badge:"Most popular", plan2_name:"Premium", plan2_desc:"For teams publishing every week.", plan2_f1:"posts per month", plan2_f2:"Historical analytics on your content", plan2_f3:"Early access to new features", plan2_f4:"Everything in Basic",
+      plan3_name:"Agency", plan3_desc:"For agencies and multi-brand teams.", plan3_f1:"posts per month, premium quality", plan3_f2:"MCP support to plug into your stack", plan3_f3:"Multi-brand management", plan3_f4:"Everything in Premium",
+      final_title:"Your next valuable content takes 3 minutes.", final_sub:"Give the topic, pick the alternative you like best, and let Feelim schedule, publish and drive impact for you.", final_cta:"Create my first content",
+      footer_tag:"Quality content, in minutes.", footer_rights:"© 2026 Feelim. All rights reserved.",
+      wompi_success_title:"Payment successful!", wompi_success_body:"Thank you for your payment — you can log in now.", wompi_success_cta:"Log in", wompi_success_close:"Close", wompi_popup_msg:"Payment received. Closing this window…"
+    },
+    fr: {
+      nav_how:"Comment ça marche", nav_features:"Fonctionnalités", nav_pricing:"Tarifs", nav_cta:"Essai gratuit",
+      hero_eyebrow:"UN CONTENU APPUYÉ SUR DE VRAIES SOURCES",
+      hero_title:"Du <span class=\"mark\">contenu générique</span> à celui auquel votre audience <span class=\"mark-yellow\">croit vraiment</span>.",
+      hero_sub:"Feelim transforme un sujet en contenu publiable à la qualité vérifiable — avec vos propres sources, des articles scientifiques ou une recherche web — puis le programme, le publie et en mesure l'impact pour vous.",
+      hero_cta_primary:"Créer mon premier contenu", hero_cta_secondary:"Voir comment ça marche",
+      hero_stat_1:"par publication", hero_stat_2:"alternatives par sujet", hero_stat_3:"publications/mois (offre agence)",
+      hero_badge_models:"Claude · OpenAI · Gemini, orchestrés",
+      mock_topic:"Sujet : l'impact de l'IA sur le marketing B2B", mock_alt1:"Carrousel", mock_alt2:"Article", mock_alt3:"Vidéo",
+      mock_quality:"Qualité", mock_clarity:"Clarté", mock_calendar:"Calendrier", mock_engagement:"engagement mesuré",
+      mock_paper:"paper_transformers_marketing.pdf", mock_shared:"Partagé avec 3 collègues", mock_best:"Meilleur résultat combiné",
+      mock_published:"Publié à votre image", mock_live:"EN LIGNE",
+      mock_metric1:"Engagement", mock_metric2:"Portée", mock_metric3:"Score de qualité", mock_metric4:"Recommandations du mois",
+      pain_eyebrow:"LE PROBLÈME", pain_title:"L'« AI slop » coûte déjà de la crédibilité à votre marque.",
+      pain_body:"Nous l'avons prouvé : un contenu IA de mauvaise qualité, sans base solide, nuit à la perception d'une marque. Feelim prend le chemin inverse — apportez vos propres sources, ou laissez Feelim explorer le web pour approfondir réellement le sujet avant d'écrire la moindre ligne.",
+      pain_bad_title:"Contenu IA générique", pain_bad_1:"Données inventées ou obsolètes, sans source citable", pain_bad_2:"Le même ton plat à chaque publication", pain_bad_3:"Des heures de relecture avant d'être présentable",
+      pain_good_title:"Contenu créé avec Feelim", pain_good_1:"Vos sources, articles ou recherches web comme base", pain_good_2:"Un score de qualité et de clarté avant publication", pain_good_3:"Prêt à partager en quelques minutes",
+      v2_eyebrow:"DE LA SCIENCE AU FIL D'ACTUALITÉ", v2_title:"Transformez des articles scientifiques en contenu que votre équipe partage vraiment.",
+      v2_body:"Importez l'étude, le rapport ou l'article que vous souhaitez diffuser. Feelim réduit l'effort de traduction dans un langage que votre équipe marketing peut utiliser immédiatement — et donne à vos collègues quelque chose qu'ils ont vraiment envie de partager.",
+      v3_eyebrow:"INTELLIGENCE COMBINÉE", v3_title:"Vous utilisez Claude, ChatGPT, Gemini... nous les intégrons avec intelligence.",
+      v3_body:"Nous ne misons pas sur un seul modèle. Feelim orchestre plusieurs moteurs d'IA et utilise le meilleur de chacun selon la tâche — recherche, rédaction, vérification ou génération de médias — pour un résultat supérieur à celui de chaque modèle pris isolément.",
+      v4_eyebrow:"PUBLIER ET APPRENDRE", v4_title:"Publication automatique à votre image, avec des recommandations pour itérer.",
+      v4_body:"Feelim publie avec qualité et applique votre identité de marque à chaque contenu. Explorez les résultats, mesurez l'impact réel et, après le premier mois, recevez des métriques et des recommandations concrètes pour améliorer votre prochain contenu.",
+      v5_eyebrow:"DU TEMPS RETROUVÉ", v5_title:"De 10 minutes à seulement 3 pour créer un contenu de valeur.",
+      v5_body:"Chaque publication demandait recherche, rédaction, relecture et programmation, séparément. Feelim compresse tout ce processus sans sacrifier la qualité, pour que votre équipe publie plus et réfléchisse davantage.",
+      how_eyebrow:"COMMENT ÇA MARCHE", how_title:"Du sujet à la publication, en cinq étapes.",
+      how_1_title:"Donnez le sujet", how_1_body:"Saisissez un sujet ou importez vos sources et articles.",
+      how_2_title:"Recevez 3 alternatives", how_2_body:"Feelim fait la recherche et propose trois angles différents.",
+      how_3_title:"Choisissez le format", how_3_body:"Sélectionnez le média que vous préférez : texte, carrousel ou vidéo.",
+      how_4_title:"Programmez et publiez", how_4_body:"À votre image, prêt pour vos profils.",
+      how_5_title:"Explorez, mesurez, itérez", how_5_body:"Métriques et recommandations pour le prochain contenu.",
+      pricing_eyebrow:"TARIFS", pricing_title:"Une offre pour chaque étape de votre contenu.", pricing_sub:"Annulez à tout moment. Sans engagement.",
+      plan_period:"/ mois", plan_cta:"Commencer",
+      plan1_name:"Base", plan1_desc:"Pour commencer à publier avec qualité.", plan1_f1:"publications par mois", plan1_f2:"Connectez votre profil personnel et professionnel", plan1_f3:"3 alternatives par sujet", plan1_f4:"Programmation et publication automatiques",
+      plan2_badge:"Le plus choisi", plan2_name:"Premium", plan2_desc:"Pour les équipes qui publient chaque semaine.", plan2_f1:"publications par mois", plan2_f2:"Analyse historique de votre contenu", plan2_f3:"Accès anticipé aux nouvelles fonctionnalités", plan2_f4:"Tout ce qui est inclus dans Base",
+      plan3_name:"Agences", plan3_desc:"Pour les agences et équipes multi-marques.", plan3_f1:"publications par mois, qualité premium", plan3_f2:"Support MCP pour s'intégrer à votre stack", plan3_f3:"Gestion multi-marques", plan3_f4:"Tout ce qui est inclus dans Premium",
+      final_title:"Votre prochain contenu de valeur ne prend que 3 minutes.", final_sub:"Donnez le sujet, choisissez l'alternative que vous préférez, et laissez Feelim programmer, publier et générer de l'impact pour vous.", final_cta:"Créer mon premier contenu",
+      footer_tag:"Un contenu de qualité, en quelques minutes.", footer_rights:"© 2026 Feelim. Tous droits réservés.",
+      wompi_success_title:"Paiement réussi !", wompi_success_body:"Merci pour votre paiement — vous pouvez vous connecter dès maintenant.", wompi_success_cta:"Se connecter", wompi_success_close:"Fermer", wompi_popup_msg:"Paiement reçu. Fermeture de cette fenêtre…"
+    },
+    it: {
+      nav_how:"Come funziona", nav_features:"Funzionalità", nav_pricing:"Prezzi", nav_cta:"Inizia gratis",
+      hero_eyebrow:"CONTENUTI BASATI SU FONTI REALI",
+      hero_title:"Dal <span class=\"mark\">contenuto generico</span> a quello in cui il tuo pubblico <span class=\"mark-yellow\">crede davvero</span>.",
+      hero_sub:"Feelim trasforma un argomento in contenuti pronti da pubblicare con qualità verificabile — usando le tue fonti, paper scientifici o ricerche sul web — poi li programma, li pubblica e ne misura l'impatto per te.",
+      hero_cta_primary:"Crea il mio primo contenuto", hero_cta_secondary:"Guarda come funziona",
+      hero_stat_1:"a pubblicazione", hero_stat_2:"alternative per argomento", hero_stat_3:"pubblicazioni/mese (piano agenzia)",
+      hero_badge_models:"Claude · OpenAI · Gemini, orchestrati",
+      mock_topic:"Argomento: impatto dell'IA sul marketing B2B", mock_alt1:"Carosello", mock_alt2:"Articolo", mock_alt3:"Video",
+      mock_quality:"Qualità", mock_clarity:"Chiarezza", mock_calendar:"Calendario", mock_engagement:"engagement misurato",
+      mock_paper:"paper_transformers_marketing.pdf", mock_shared:"Condiviso con 3 colleghi", mock_best:"Miglior risultato combinato",
+      mock_published:"Pubblicato con il tuo brand", mock_live:"LIVE",
+      mock_metric1:"Engagement", mock_metric2:"Copertura", mock_metric3:"Punteggio qualità", mock_metric4:"Consigli del mese",
+      pain_eyebrow:"IL PROBLEMA", pain_title:"L'\"AI slop\" sta già costando credibilità al tuo brand.",
+      pain_body:"L'abbiamo dimostrato: un contenuto IA di bassa qualità e senza basi danneggia la percezione di un brand. Feelim fa il contrario — porta le tue fonti, oppure lascia che Feelim consulti il web per approfondire davvero l'argomento prima di scrivere una sola riga.",
+      pain_bad_title:"Contenuto IA generico", pain_bad_1:"Dati inventati o non aggiornati, senza fonte citabile", pain_bad_2:"Lo stesso tono piatto in ogni post", pain_bad_3:"Ore di revisione prima di poterlo pubblicare",
+      pain_good_title:"Contenuto creato con Feelim", pain_good_1:"Le tue fonti, paper o ricerche web come base", pain_good_2:"Un punteggio di qualità e chiarezza prima di pubblicare", pain_good_3:"Pronto da condividere in pochi minuti",
+      v2_eyebrow:"DALLA SCIENZA AL FEED", v2_title:"Trasforma paper scientifici in contenuti che il tuo team condivide davvero.",
+      v2_body:"Carica lo studio, il report o il paper che vuoi divulgare. Feelim riduce lo sforzo di tradurlo in un linguaggio che il tuo team marketing può usare subito — dando ai tuoi colleghi qualcosa che vogliono davvero condividere.",
+      v3_eyebrow:"INTELLIGENZA COMBINATA", v3_title:"Usi Claude, ChatGPT, Gemini... noi li integriamo con intelligenza.",
+      v3_body:"Non puntiamo su un solo modello. Feelim orchestra più motori IA e usa il meglio di ciascuno in base al compito — ricerca, scrittura, verifica o generazione di media — per un risultato migliore di qualsiasi modello preso da solo.",
+      v4_eyebrow:"PUBBLICA E IMPARA", v4_title:"Pubblicazione automatica con il tuo brand, e consigli per iterare.",
+      v4_body:"Feelim pubblica con qualità e applica la tua identità di brand a ogni contenuto. Esplora i risultati, misura l'impatto reale e, dopo il primo mese, ricevi metriche e consigli concreti per migliorare il prossimo contenuto.",
+      v5_eyebrow:"TEMPO RECUPERATO", v5_title:"Da 10 minuti a soli 3 per creare contenuti di valore.",
+      v5_body:"Ogni pubblicazione richiedeva ricerca, scrittura, revisione e programmazione come passaggi separati. Feelim comprime l'intero processo senza sacrificare la qualità, così il tuo team pubblica di più e pensa di più.",
+      how_eyebrow:"COME FUNZIONA", how_title:"Dall'argomento alla pubblicazione, in cinque passi.",
+      how_1_title:"Indica l'argomento", how_1_body:"Scrivi un argomento o carica le tue fonti e paper.",
+      how_2_title:"Ricevi 3 alternative", how_2_body:"Feelim fa ricerca e propone tre approcci diversi.",
+      how_3_title:"Scegli il formato", how_3_body:"Scegli il media che preferisci: testo, carosello o video.",
+      how_4_title:"Programma e pubblica", how_4_body:"Con il tuo brand applicato, pronto per i tuoi profili.",
+      how_5_title:"Esplora, misura, itera", how_5_body:"Metriche e consigli per il prossimo contenuto.",
+      pricing_eyebrow:"PREZZI", pricing_title:"Un piano per ogni fase dei tuoi contenuti.", pricing_sub:"Annulla quando vuoi. Nessun vincolo.",
+      plan_period:"/ mese", plan_cta:"Inizia",
+      plan1_name:"Base", plan1_desc:"Per iniziare a pubblicare con qualità.", plan1_f1:"pubblicazioni al mese", plan1_f2:"Collega il tuo profilo personale e aziendale", plan1_f3:"3 alternative per argomento", plan1_f4:"Programmazione e pubblicazione automatica",
+      plan2_badge:"Più scelto", plan2_name:"Premium", plan2_desc:"Per team che pubblicano ogni settimana.", plan2_f1:"pubblicazioni al mese", plan2_f2:"Analisi storica dei tuoi contenuti", plan2_f3:"Accesso anticipato alle nuove funzionalità", plan2_f4:"Tutto ciò che è incluso in Base",
+      plan3_name:"Agenzie", plan3_desc:"Per agenzie e team multi-brand.", plan3_f1:"pubblicazioni al mese, qualità premium", plan3_f2:"Supporto MCP per integrarti con il tuo stack", plan3_f3:"Gestione multi-brand", plan3_f4:"Tutto ciò che è incluso in Premium",
+      final_title:"Il tuo prossimo contenuto di valore richiede solo 3 minuti.", final_sub:"Indica l'argomento, scegli l'alternativa che preferisci, e lascia che Feelim programmi, pubblichi e generi impatto per te.", final_cta:"Crea il mio primo contenuto",
+      footer_tag:"Contenuti di qualità, in pochi minuti.", footer_rights:"© 2026 Feelim. Tutti i diritti riservati.",
+      wompi_success_title:"Pagamento riuscito!", wompi_success_body:"Grazie per il tuo pagamento: ora puoi accedere.", wompi_success_cta:"Accedi", wompi_success_close:"Chiudi", wompi_popup_msg:"Pagamento ricevuto. Chiusura della finestra…"
+    }
+  };
+
+  function apply(lang){
+    document.documentElement.lang = lang;
+    document.getElementById('langCurrent').textContent = lang.toUpperCase();
+    document.querySelectorAll('[data-i18n]').forEach(el=>{
+      const key = el.getAttribute('data-i18n');
+      if(T[lang][key] !== undefined) el.textContent = T[lang][key];
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(el=>{
+      const key = el.getAttribute('data-i18n-html');
+      if(T[lang][key] !== undefined) el.innerHTML = T[lang][key];
+    });
+    document.querySelectorAll('#langMenu button').forEach(b=>{
+      b.setAttribute('aria-current', b.dataset.lang === lang ? 'true' : 'false');
+    });
+    try{ localStorage.setItem('feelim_lang', lang); }catch(e){}
+  }
+
+  function detectDefault(){
+    try{
+      const saved = localStorage.getItem('feelim_lang');
+      if(saved && T[saved]) return saved;
+    }catch(e){}
+    const nav = (navigator.language || 'es').slice(0,2).toLowerCase();
+    return T[nav] ? nav : 'es';
+  }
+
+  const langBtn = document.getElementById('langBtn');
+  const langMenu = document.getElementById('langMenu');
+  langBtn.addEventListener('click', ()=>{
+    const open = langMenu.classList.toggle('open');
+    langBtn.setAttribute('aria-expanded', open ? 'true':'false');
+  });
+  document.addEventListener('click', (e)=>{
+    if(!e.target.closest('.lang-switch')) langMenu.classList.remove('open');
+  });
+  document.querySelectorAll('#langMenu button').forEach(b=>{
+    b.addEventListener('click', ()=>{ apply(b.dataset.lang); langMenu.classList.remove('open'); });
+  });
+
+  apply(detectDefault());
+
+  /* ---------- Motion system ---------- */
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const siteHeader = document.querySelector('header');
+  const progressBar = document.getElementById('scrollProgress');
+
+  function onScroll(){
+    const doc = document.documentElement;
+    const scrollTop = doc.scrollTop || document.body.scrollTop;
+    const height = (doc.scrollHeight - doc.clientHeight) || 1;
+    if(progressBar) progressBar.style.width = Math.min(100, (scrollTop/height)*100) + '%';
+    if(siteHeader) siteHeader.classList.toggle('scrolled', scrollTop > 8);
+  }
+  document.addEventListener('scroll', ()=>{ requestAnimationFrame(onScroll); }, {passive:true});
+  onScroll();
+
+  // stagger delay for groups of reveal elements sharing a [data-stagger] parent
+  document.querySelectorAll('[data-stagger]').forEach(group=>{
+    Array.from(group.children).forEach((child, i)=>{
+      if(child.classList.contains('reveal')||child.classList.contains('reveal-left')||
+         child.classList.contains('reveal-right')||child.classList.contains('reveal-scale')){
+        child.style.transitionDelay = (i*100) + 'ms';
+      }
+    });
+  });
+
+  if(reduceMotion){
+    document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').forEach(el=>el.classList.add('in'));
+  } else if('IntersectionObserver' in window){
+    const revealObserver = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          entry.target.classList.add('in');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.18, rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').forEach(el=>revealObserver.observe(el));
+  }
+
+  // animated count-up for numeric badges/prices/metrics
+  function animateCount(el){
+    const raw = el.textContent.trim();
+    const m = raw.match(/^([$+-]*)(\d+(?:\.\d+)?)(.*)$/);
+    if(!m){ return; }
+    const prefix = m[1], target = parseFloat(m[2]), suffix = m[3], isFloat = m[2].indexOf('.') !== -1;
+    const dur = 1000, start = performance.now();
+    function tick(now){
+      const p = Math.min(1, (now-start)/dur);
+      const eased = 1 - Math.pow(1-p, 3);
+      const val = target*eased;
+      el.textContent = prefix + (isFloat ? val.toFixed(1) : Math.round(val)) + suffix;
+      if(p < 1) requestAnimationFrame(tick); else el.textContent = raw;
+    }
+    requestAnimationFrame(tick);
+  }
+  if(!reduceMotion && 'IntersectionObserver' in window){
+    const countObserver = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          animateCount(entry.target);
+          countObserver.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.6});
+    document.querySelectorAll('.count').forEach(el=>countObserver.observe(el));
+  }
+
+  // fill the quality/clarity bars once the hero mock panel is in view
+  const heroBars = document.querySelectorAll('.panel-main .bar i[data-w]');
+  if(heroBars.length){
+    setTimeout(()=>{ heroBars.forEach(b=>{ b.style.width = b.getAttribute('data-w'); }); }, reduceMotion ? 0 : 950);
+  }
+
+  // subtle 3D tilt on hover for cards/panels marked .tilt
+  if(!reduceMotion && window.matchMedia('(hover: hover)').matches){
+    document.querySelectorAll('.tilt').forEach(card=>{
+      const base = card.getAttribute('data-tilt-base') || '';
+      card.addEventListener('mousemove', (e)=>{
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width;
+        const py = (e.clientY - r.top) / r.height;
+        const rx = (0.5 - py) * 8;
+        const ry = (px - 0.5) * 8;
+        card.style.transform = `${base} perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) scale(1.015)`;
+      });
+      card.addEventListener('mouseleave', ()=>{ card.style.transform = base || ''; });
+    });
+  }
+
+  /* ---------- Wompi checkout: popup + return-to-confirmation ---------- */
+  var WOMPI_LINKS = {
+    basic: 'https://checkout.wompi.co/l/np0OXg',
+    premium: 'https://checkout.wompi.co/l/PwbFLR',
+    agency: 'https://checkout.wompi.co/l/7O3i0e'
+  };
+  var wompiModal = document.getElementById('wompiModal');
+  var wompiModalClose = document.getElementById('wompiModalClose');
+  var wompiModalDismiss = document.getElementById('wompiModalDismiss');
+  var wompiPopupMsg = document.getElementById('wompiPopupMsg');
+
+  function openWompiModal(){
+    if(!wompiModal) return;
+    wompiModal.hidden = false;
+    requestAnimationFrame(function(){ wompiModal.classList.add('open'); });
+  }
+  function closeWompiModal(){
+    if(!wompiModal) return;
+    wompiModal.classList.remove('open');
+    setTimeout(function(){ wompiModal.hidden = true; }, 250);
+  }
+  if(wompiModalClose) wompiModalClose.addEventListener('click', closeWompiModal);
+  if(wompiModalDismiss) wompiModalDismiss.addEventListener('click', closeWompiModal);
+  if(wompiModal) wompiModal.addEventListener('click', function(e){ if(e.target === wompiModal) closeWompiModal(); });
+
+  document.querySelectorAll('[data-wompi-plan]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var plan = this.getAttribute('data-wompi-plan');
+      var url = WOMPI_LINKS[plan];
+      if(!url) return;
+      e.preventDefault();
+      var w = 480, h = 760;
+      var left = Math.max(0, (screen.width - w) / 2);
+      var top = Math.max(0, (screen.height - h) / 2);
+      var popup = window.open(url, 'wompi_checkout_' + plan, 'width=' + w + ',height=' + h + ',left=' + left + ',top=' + top + ',resizable=yes,scrollbars=yes');
+      if(!popup){ window.location.href = url; }
+    });
+  });
+
+  window.addEventListener('message', function(e){
+    var data = e.data;
+    if(!data || data.source !== 'feelim_wompi' || data.status !== 'success') return;
+    openWompiModal();
+  });
+
+  (function checkWompiReturn(){
+    var params;
+    try{ params = new URLSearchParams(window.location.search); }catch(e){ return; }
+    if(params.get('wompi') !== 'success') return;
+    var plan = params.get('plan') || '';
+    if(window.opener && !window.opener.closed){
+      try{ window.opener.postMessage({source:'feelim_wompi', status:'success', plan:plan}, '*'); }catch(e){}
+      if(wompiPopupMsg) wompiPopupMsg.hidden = false;
+      setTimeout(function(){ try{ window.close(); }catch(e){} }, 1600);
+    } else {
+      openWompiModal();
+    }
+    if(window.history && window.history.replaceState){
+      window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
+    }
+  })();
+})();
+</script>
+
+</body>
+</html>
