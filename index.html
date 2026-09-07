@@ -648,6 +648,12 @@
   @media (prefers-reduced-motion: reduce){
     .panel{animation:none;}
   }
+
+  /* ---------- Mid-page conversion CTAs: lightweight, anchor straight to pricing ---------- */
+  .mini-cta{text-align:center;padding:44px 0 4px;}
+  .mini-cta p{font-size:15.5px;font-weight:700;margin-bottom:16px;}
+  .mini-cta.on-dark p{color:#f2f9f4;}
+  .mini-cta.on-light p{color:var(--ink);}
 </style>
 </head>
 <body>
@@ -677,7 +683,7 @@
           <button data-lang="it">Italiano <span>IT</span></button>
         </div>
       </div>
-      <a class="btn btn-accent btn-sm btn-shine" href="https://getstarted.feelim.io/" target="_blank" rel="noopener" data-i18n="nav_cta">Empieza gratis</a>
+      <a class="btn btn-accent btn-sm btn-shine" href="#precios" data-i18n="nav_cta">Suscríbete</a>
     </div>
   </div>
 </header>
@@ -694,7 +700,7 @@
         <h1 data-i18n-html="hero_title">Del <span class="mark">contenido genérico</span> al que tu audiencia <span class="mark-yellow">de verdad cree</span>.</h1>
         <p class="hero-sub" data-i18n="hero_sub">Feelim convierte un tema en publicaciones con calidad verificable — con tus propias fuentes, papers e investigación web — y las programa, publica y mide por ti.</p>
         <div class="hero-ctas">
-          <a class="btn btn-primary" href="https://getstarted.feelim.io/" target="_blank" rel="noopener" data-i18n="hero_cta_primary">Crear mi primer contenido</a>
+          <a class="btn btn-primary" href="#precios" data-i18n="hero_cta_primary">Crear mi primer contenido</a>
           <a class="btn btn-ghost" href="#como-funciona" data-i18n="hero_cta_secondary">Ver cómo funciona</a>
         </div>
         <div class="hero-stats">
@@ -790,6 +796,11 @@
           </ul>
         </div>
       </div>
+
+      <div class="mini-cta on-dark reveal">
+        <p data-i18n="cta_pain_lead">¿Listo para dejar atrás el contenido genérico?</p>
+        <a class="btn btn-accent btn-shine" href="#precios" data-i18n="cta_pain_btn">Adquiere tu acceso</a>
+      </div>
     </div>
   </section>
 
@@ -880,6 +891,12 @@
         </div>
       </div>
     </div>
+    <div class="wrap">
+      <div class="mini-cta on-light reveal">
+        <p data-i18n="cta_value_lead">Recupera esas horas, desde hoy.</p>
+        <a class="btn btn-accent btn-shine" href="#precios" data-i18n="cta_value_btn">Comprar ahora</a>
+      </div>
+    </div>
   </section>
 
   <!-- HOW IT WORKS -->
@@ -949,6 +966,11 @@
         <div class="step tilt reveal-scale"><span class="n">04</span><h4 data-i18n="how_4_title">Programa y publica</h4><p data-i18n="how_4_body">Con tu marca aplicada, listo para tus perfiles.</p></div>
         <div class="step tilt reveal-scale"><span class="n">05</span><h4 data-i18n="how_5_title">Explora, mide, itera</h4><p data-i18n="how_5_body">Métricas y recomendaciones para el próximo contenido.</p></div>
       </div>
+
+      <div class="mini-cta on-light reveal">
+        <p data-i18n="cta_how_lead">Así de simple es empezar a publicar mejor.</p>
+        <a class="btn btn-accent btn-shine" href="#precios" data-i18n="cta_how_btn">Escoge tu plan</a>
+      </div>
     </div>
   </section>
 
@@ -1010,7 +1032,7 @@
       <h2 data-i18n="final_title">Tu próximo contenido de valor toma 3 minutos.</h2>
       <p data-i18n="final_sub">Da el tema, elige la alternativa que más te guste, y deja que Feelim programe, publique e impacte por ti.</p>
       <div class="hero-ctas">
-        <a class="btn btn-accent btn-shine" href="https://getstarted.feelim.io/" target="_blank" rel="noopener" data-i18n="final_cta">Crear mi primer contenido</a>
+        <a class="btn btn-accent btn-shine" href="#precios" data-i18n="final_cta">Crear mi primer contenido</a>
       </div>
     </div>
   </section>
@@ -1049,7 +1071,7 @@
 (function(){
   const T = {
     es: {
-      nav_how:"Cómo funciona", nav_features:"Funciones", nav_pricing:"Precios", nav_cta:"Empieza gratis",
+      nav_how:"Cómo funciona", nav_features:"Funciones", nav_pricing:"Precios", nav_cta:"Suscríbete",
       hero_eyebrow:"CONTENIDO CON FUENTES REALES",
       hero_title:'Del <span class="mark">contenido genérico</span> al que tu audiencia <span class="mark-yellow">de verdad cree</span>.',
       hero_sub:"Feelim convierte un tema en publicaciones con calidad verificable — con tus propias fuentes, papers e investigación web — y las programa, publica y mide por ti.",
@@ -1087,10 +1109,13 @@
       plan3_name:"Agencias", plan3_desc:"Para agencias y equipos con varias marcas.", plan3_f1:"publicaciones al mes, calidad premium", plan3_f2:"Soporte MCP para integrarte con tu stack", plan3_f3:"Gestión multi-marca", plan3_f4:"Todo lo del plan Premium",
       final_title:"Tu próximo contenido de valor toma 3 minutos.", final_sub:"Da el tema, elige la alternativa que más te guste, y deja que Feelim programe, publique e impacte por ti.", final_cta:"Crear mi primer contenido",
       footer_tag:"Contenido con calidad, en minutos.", footer_rights:"© 2026 Feelim. Todos los derechos reservados.",
-      wompi_success_title:"¡Pago exitoso!", wompi_success_body:"Gracias por tu pago, ya puedes ingresar.", wompi_success_cta:"Ingresar", wompi_success_close:"Cerrar", wompi_popup_msg:"Pago recibido. Cerrando esta ventana…"
+      wompi_success_title:"¡Pago exitoso!", wompi_success_body:"Gracias por tu pago, ya puedes ingresar.", wompi_success_cta:"Ingresar", wompi_success_close:"Cerrar", wompi_popup_msg:"Pago recibido. Cerrando esta ventana…",
+      cta_pain_lead:"¿Listo para dejar atrás el contenido genérico?", cta_pain_btn:"Adquiere tu acceso",
+      cta_value_lead:"Recupera esas horas, desde hoy.", cta_value_btn:"Comprar ahora",
+      cta_how_lead:"Así de simple es empezar a publicar mejor.", cta_how_btn:"Escoge tu plan"
     },
     en: {
-      nav_how:"How it works", nav_features:"Features", nav_pricing:"Pricing", nav_cta:"Start for free",
+      nav_how:"How it works", nav_features:"Features", nav_pricing:"Pricing", nav_cta:"Subscribe",
       hero_eyebrow:"CONTENT BACKED BY REAL SOURCES",
       hero_title:'From <span class="mark">generic content</span> to what your audience <span class="mark-yellow">actually believes</span>.',
       hero_sub:"Feelim turns a topic into publish-ready content with verifiable quality — using your own sources, papers, or live web research — then schedules, publishes and measures it for you.",
@@ -1127,10 +1152,13 @@
       plan3_name:"Agency", plan3_desc:"For agencies and multi-brand teams.", plan3_f1:"posts per month, premium quality", plan3_f2:"MCP support to plug into your stack", plan3_f3:"Multi-brand management", plan3_f4:"Everything in Premium",
       final_title:"Your next valuable content takes 3 minutes.", final_sub:"Give the topic, pick the alternative you like best, and let Feelim schedule, publish and drive impact for you.", final_cta:"Create my first content",
       footer_tag:"Quality content, in minutes.", footer_rights:"© 2026 Feelim. All rights reserved.",
-      wompi_success_title:"Payment successful!", wompi_success_body:"Thank you for your payment — you can log in now.", wompi_success_cta:"Log in", wompi_success_close:"Close", wompi_popup_msg:"Payment received. Closing this window…"
+      wompi_success_title:"Payment successful!", wompi_success_body:"Thank you for your payment — you can log in now.", wompi_success_cta:"Log in", wompi_success_close:"Close", wompi_popup_msg:"Payment received. Closing this window…",
+      cta_pain_lead:"Ready to leave generic content behind?", cta_pain_btn:"Get your access",
+      cta_value_lead:"Get those hours back, starting today.", cta_value_btn:"Buy now",
+      cta_how_lead:"That's how simple it is to start publishing better.", cta_how_btn:"Choose your plan"
     },
     fr: {
-      nav_how:"Comment ça marche", nav_features:"Fonctionnalités", nav_pricing:"Tarifs", nav_cta:"Essai gratuit",
+      nav_how:"Comment ça marche", nav_features:"Fonctionnalités", nav_pricing:"Tarifs", nav_cta:"S'abonner",
       hero_eyebrow:"UN CONTENU APPUYÉ SUR DE VRAIES SOURCES",
       hero_title:"Du <span class=\"mark\">contenu générique</span> à celui auquel votre audience <span class=\"mark-yellow\">croit vraiment</span>.",
       hero_sub:"Feelim transforme un sujet en contenu publiable à la qualité vérifiable — avec vos propres sources, des articles scientifiques ou une recherche web — puis le programme, le publie et en mesure l'impact pour vous.",
@@ -1167,10 +1195,13 @@
       plan3_name:"Agences", plan3_desc:"Pour les agences et équipes multi-marques.", plan3_f1:"publications par mois, qualité premium", plan3_f2:"Support MCP pour s'intégrer à votre stack", plan3_f3:"Gestion multi-marques", plan3_f4:"Tout ce qui est inclus dans Premium",
       final_title:"Votre prochain contenu de valeur ne prend que 3 minutes.", final_sub:"Donnez le sujet, choisissez l'alternative que vous préférez, et laissez Feelim programmer, publier et générer de l'impact pour vous.", final_cta:"Créer mon premier contenu",
       footer_tag:"Un contenu de qualité, en quelques minutes.", footer_rights:"© 2026 Feelim. Tous droits réservés.",
-      wompi_success_title:"Paiement réussi !", wompi_success_body:"Merci pour votre paiement — vous pouvez vous connecter dès maintenant.", wompi_success_cta:"Se connecter", wompi_success_close:"Fermer", wompi_popup_msg:"Paiement reçu. Fermeture de cette fenêtre…"
+      wompi_success_title:"Paiement réussi !", wompi_success_body:"Merci pour votre paiement — vous pouvez vous connecter dès maintenant.", wompi_success_cta:"Se connecter", wompi_success_close:"Fermer", wompi_popup_msg:"Paiement reçu. Fermeture de cette fenêtre…",
+      cta_pain_lead:"Prêt à laisser le contenu générique derrière vous ?", cta_pain_btn:"Obtenez votre accès",
+      cta_value_lead:"Récupérez ces heures, dès aujourd'hui.", cta_value_btn:"Acheter maintenant",
+      cta_how_lead:"Voilà comme il est simple de commencer à mieux publier.", cta_how_btn:"Choisissez votre offre"
     },
     it: {
-      nav_how:"Come funziona", nav_features:"Funzionalità", nav_pricing:"Prezzi", nav_cta:"Inizia gratis",
+      nav_how:"Come funziona", nav_features:"Funzionalità", nav_pricing:"Prezzi", nav_cta:"Abbonati",
       hero_eyebrow:"CONTENUTI BASATI SU FONTI REALI",
       hero_title:"Dal <span class=\"mark\">contenuto generico</span> a quello in cui il tuo pubblico <span class=\"mark-yellow\">crede davvero</span>.",
       hero_sub:"Feelim trasforma un argomento in contenuti pronti da pubblicare con qualità verificabile — usando le tue fonti, paper scientifici o ricerche sul web — poi li programma, li pubblica e ne misura l'impatto per te.",
@@ -1207,7 +1238,10 @@
       plan3_name:"Agenzie", plan3_desc:"Per agenzie e team multi-brand.", plan3_f1:"pubblicazioni al mese, qualità premium", plan3_f2:"Supporto MCP per integrarti con il tuo stack", plan3_f3:"Gestione multi-brand", plan3_f4:"Tutto ciò che è incluso in Premium",
       final_title:"Il tuo prossimo contenuto di valore richiede solo 3 minuti.", final_sub:"Indica l'argomento, scegli l'alternativa che preferisci, e lascia che Feelim programmi, pubblichi e generi impatto per te.", final_cta:"Crea il mio primo contenuto",
       footer_tag:"Contenuti di qualità, in pochi minuti.", footer_rights:"© 2026 Feelim. Tutti i diritti riservati.",
-      wompi_success_title:"Pagamento riuscito!", wompi_success_body:"Grazie per il tuo pagamento: ora puoi accedere.", wompi_success_cta:"Accedi", wompi_success_close:"Chiudi", wompi_popup_msg:"Pagamento ricevuto. Chiusura della finestra…"
+      wompi_success_title:"Pagamento riuscito!", wompi_success_body:"Grazie per il tuo pagamento: ora puoi accedere.", wompi_success_cta:"Accedi", wompi_success_close:"Chiudi", wompi_popup_msg:"Pagamento ricevuto. Chiusura della finestra…",
+      cta_pain_lead:"Pronto a lasciarti alle spalle i contenuti generici?", cta_pain_btn:"Ottieni il tuo accesso",
+      cta_value_lead:"Recupera quelle ore, da oggi.", cta_value_btn:"Acquista ora",
+      cta_how_lead:"Ecco quanto è semplice iniziare a pubblicare meglio.", cta_how_btn:"Scegli il tuo piano"
     }
   };
 
