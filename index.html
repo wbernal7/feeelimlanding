@@ -105,27 +105,19 @@
     padding:0 .12em;
   }
   .mark-yellow{background:linear-gradient(180deg, transparent 62%, var(--yellow) 62%);}
-  /* Dark mode: the pale mint/yellow marker reads flat against a dark page, so we
-     brighten the marker and force dark ink on the marked words themselves —
-     same "highlighter" effect as light mode, just inverted. Applies at any
-     viewport width (desktop and mobile share this rule). */
+  /* Dark mode: no highlight bar — just plain (light) text, same as the rest
+     of the heading. The marker background is a light-mode-only effect. */
   @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]) .mark{
-      background:linear-gradient(180deg, transparent 56%, #35e79b 56%);
-      color:#04150c;
-    }
+    :root:not([data-theme="light"]) .mark,
     :root:not([data-theme="light"]) .mark-yellow{
-      background:linear-gradient(180deg, transparent 56%, #ffe066 56%);
-      color:#04150c;
+      background:none;
+      color:var(--ink);
     }
   }
-  :root[data-theme="dark"] .mark{
-    background:linear-gradient(180deg, transparent 56%, #35e79b 56%);
-    color:#04150c;
-  }
+  :root[data-theme="dark"] .mark,
   :root[data-theme="dark"] .mark-yellow{
-    background:linear-gradient(180deg, transparent 56%, #ffe066 56%);
-    color:#04150c;
+    background:none;
+    color:var(--ink);
   }
   .eyebrow{
     font-family:'JetBrains Mono', monospace;
