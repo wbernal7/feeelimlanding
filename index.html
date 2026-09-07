@@ -3,25 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Feelim — Contenido con fuentes reales, en minutos</title>
-<meta name="description" content="Feelim convierte un tema en publicaciones con calidad verificable — con tus propias fuentes, papers e investigación web — y las programa, publica y mide por ti.">
+<title>Feelim — Contenido que no suena a IA genérica</title>
+<meta name="description" content="Feelim convierte un tema en contenido de LinkedIn que no suena a IA genérica — texto, imágenes y carruseles, para tu perfil, tu empresa o tus clientes.">
 
 <!-- Open Graph / WhatsApp, Facebook, LinkedIn link previews -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Feelim">
 <meta property="og:url" content="https://feelim.io/">
-<meta property="og:title" content="Feelim — Contenido con fuentes reales, en minutos">
-<meta property="og:description" content="Feelim convierte un tema en publicaciones con calidad verificable — con tus propias fuentes, papers e investigación web — y las programa, publica y mide por ti.">
+<meta property="og:title" content="Feelim — Contenido que no suena a IA genérica">
+<meta property="og:description" content="Feelim convierte un tema en contenido de LinkedIn que no suena a IA genérica — texto, imágenes y carruseles, para tu perfil, tu empresa o tus clientes.">
 <meta property="og:image" content="https://feelim.io/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Feelim: del contenido genérico al que tu audiencia de verdad cree.">
+<meta property="og:image:alt" content="Feelim: contenido para LinkedIn que no suena a IA genérica.">
 <meta property="og:locale" content="es_CO">
 
 <!-- Twitter/X Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Feelim — Contenido con fuentes reales, en minutos">
-<meta name="twitter:description" content="Feelim convierte un tema en publicaciones con calidad verificable — con tus propias fuentes, papers e investigación web — y las programa, publica y mide por ti.">
+<meta name="twitter:title" content="Feelim — Contenido que no suena a IA genérica">
+<meta name="twitter:description" content="Feelim convierte un tema en contenido de LinkedIn que no suena a IA genérica — texto, imágenes y carruseles, para tu perfil, tu empresa o tus clientes.">
 <meta name="twitter:image" content="https://feelim.io/og-image.jpg">
 
 <link rel="icon" type="image/png" href="https://feelim.io/favicon.png">
@@ -105,6 +105,28 @@
     padding:0 .12em;
   }
   .mark-yellow{background:linear-gradient(180deg, transparent 62%, var(--yellow) 62%);}
+  /* Dark mode: the pale mint/yellow marker reads flat against a dark page, so we
+     brighten the marker and force dark ink on the marked words themselves —
+     same "highlighter" effect as light mode, just inverted. Applies at any
+     viewport width (desktop and mobile share this rule). */
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .mark{
+      background:linear-gradient(180deg, transparent 56%, #35e79b 56%);
+      color:#04150c;
+    }
+    :root:not([data-theme="light"]) .mark-yellow{
+      background:linear-gradient(180deg, transparent 56%, #ffe066 56%);
+      color:#04150c;
+    }
+  }
+  :root[data-theme="dark"] .mark{
+    background:linear-gradient(180deg, transparent 56%, #35e79b 56%);
+    color:#04150c;
+  }
+  :root[data-theme="dark"] .mark-yellow{
+    background:linear-gradient(180deg, transparent 56%, #ffe066 56%);
+    color:#04150c;
+  }
   .eyebrow{
     font-family:'JetBrains Mono', monospace;
     font-size:12.5px;
@@ -717,9 +739,9 @@
     <span class="orb orb-hero-b" aria-hidden="true"></span>
     <div class="wrap hero-grid">
       <div>
-        <span class="eyebrow" data-i18n="hero_eyebrow">CONTENIDO CON FUENTES REALES</span>
-        <h1 data-i18n-html="hero_title">Del <span class="mark">contenido genérico</span> al que tu audiencia <span class="mark-yellow">de verdad cree</span>.</h1>
-        <p class="hero-sub" data-i18n="hero_sub">Feelim convierte un tema en publicaciones con calidad verificable — con tus propias fuentes, papers e investigación web — y las programa, publica y mide por ti.</p>
+        <span class="eyebrow" data-i18n="hero_eyebrow">CONTENIDO QUE SUENA A TI, NO A IA</span>
+        <h1 data-i18n-html="hero_title">Publica en LinkedIn contenido que <span class="mark">no suena a IA genérica</span> — y que <span class="mark-yellow">de verdad te hace destacar</span>.</h1>
+        <p class="hero-sub" data-i18n="hero_sub">Tu perfil personal, tu empresa o los clientes de tu agencia: Feelim convierte un tema en contenido de valor — texto, imágenes y carruseles — sin que necesites experiencia ni horas libres.</p>
         <div class="hero-ctas">
           <a class="btn btn-primary" href="#precios" data-i18n="hero_cta_primary">Crear mi primer contenido</a>
           <a class="btn btn-ghost" href="#como-funciona" data-i18n="hero_cta_secondary">Ver cómo funciona</a>
@@ -1093,9 +1115,9 @@
   const T = {
     es: {
       nav_how:"Cómo funciona", nav_features:"Funciones", nav_pricing:"Precios", nav_cta:"Suscríbete",
-      hero_eyebrow:"CONTENIDO CON FUENTES REALES",
-      hero_title:'Del <span class="mark">contenido genérico</span> al que tu audiencia <span class="mark-yellow">de verdad cree</span>.',
-      hero_sub:"Feelim convierte un tema en publicaciones con calidad verificable — con tus propias fuentes, papers e investigación web — y las programa, publica y mide por ti.",
+      hero_eyebrow:"CONTENIDO QUE SUENA A TI, NO A IA",
+      hero_title:'Publica en LinkedIn contenido que <span class="mark">no suena a IA genérica</span> — y que <span class="mark-yellow">de verdad te hace destacar</span>.',
+      hero_sub:"Tu perfil personal, tu empresa o los clientes de tu agencia: Feelim convierte un tema en contenido de valor — texto, imágenes y carruseles — sin que necesites experiencia ni horas libres.",
       hero_cta_primary:"Crear mi primer contenido", hero_cta_secondary:"Ver cómo funciona",
       hero_stat_1:"por publicación", hero_stat_2:"alternativas por tema", hero_stat_3:"publicaciones/mes (plan agencia)",
       hero_badge_models:"Claude · OpenAI · Gemini, orquestados",
@@ -1104,42 +1126,42 @@
       mock_paper:"paper_transformers_marketing.pdf", mock_shared:"Compartido con 3 colegas", mock_best:"Mejor resultado combinado",
       mock_published:"Publicado con tu marca", mock_live:"EN VIVO",
       mock_metric1:"Engagement", mock_metric2:"Alcance", mock_metric3:"Puntaje de calidad", mock_metric4:"Recomendaciones del mes",
-      pain_eyebrow:"EL PROBLEMA", pain_title:'El "AI slop" ya le está costando credibilidad a tu marca.',
-      pain_body:"Lo comprobamos: el contenido generado sin calidad ni respaldo daña la percepción de una marca. Feelim toma el camino contrario — puedes traer tus propias fuentes o dejar que Feelim consulte la web para profundizar de verdad en el tema antes de escribir una sola línea.",
-      pain_bad_title:"Contenido genérico de IA", pain_bad_1:"Datos inventados o desactualizados, sin fuente citable", pain_bad_2:"El mismo tono plano en cada publicación", pain_bad_3:"Horas revisando antes de publicar algo presentable",
-      pain_good_title:"Contenido con Feelim", pain_good_1:"Tus fuentes, papers o investigación web como base", pain_good_2:"Puntuación de calidad y claridad antes de publicar", pain_good_3:"Listo para compartir en minutos, no en horas",
-      v2_eyebrow:"DE LA CIENCIA AL FEED", v2_title:"Convierte papers científicos en contenido que tu equipo sí comparte.",
-      v2_body:"Sube el estudio, el informe o el paper que quieres divulgar. Feelim reduce el esfuerzo de traducirlo a un lenguaje que tu equipo de marketing pueda usar de inmediato — y le da a tus colegas algo que de verdad quieren compartir.",
-      v3_eyebrow:"INTELIGENCIA COMBINADA", v3_title:"Usas Claude, ChatGPT, Gemini... nosotros los integramos con inteligencia.",
-      v3_body:"No apostamos por un solo modelo. Feelim orquesta varios motores de IA y usa lo mejor de cada uno según la tarea — investigar, redactar, verificar o generar media — para que el resultado sea mejor que cualquiera por separado.",
+      pain_eyebrow:"EL MIEDO MÁS COMÚN", pain_title:'Publicar con IA sin criterio te hace sonar igual que todos los demás.',
+      pain_body:"Lo sabemos: empezar a publicar da miedo — no tener tiempo, no saber por dónde arrancar, y que la IA te deje con contenido plano que nadie recuerda. Feelim hace lo contrario: parte de tus propias fuentes o investiga por ti, para que cada publicación tenga tu voz y algo real que decir.",
+      pain_bad_title:"Publicar sin Feelim", pain_bad_1:"Te toma horas que no tienes, o simplemente no publicas", pain_bad_2:"El contenido con IA suena plano e igual al de todos", pain_bad_3:"No sabes si lo que escribiste realmente aporta valor",
+      pain_good_title:"Publicar con Feelim", pain_good_1:"Contenido con tu voz, respaldado en fuentes reales", pain_good_2:"Listo en minutos, sin necesitar experiencia previa", pain_good_3:"Con imágenes y carruseles que también transmiten valor",
+      v2_eyebrow:"SIN EXPERIENCIA, SIN PROBLEMA", v2_title:"No necesitas ser experto en redes para publicar contenido que aporte valor.",
+      v2_body:"Sube un artículo, una idea suelta, o simplemente cuéntale el tema a Feelim. Investigamos, estructuramos y lo convertimos en contenido listo para publicar — con tu voz, no con frases genéricas de IA.",
+      v3_eyebrow:"PARA AGENCIAS Y EQUIPOS", v3_title:"¿Agencia? Un solo lugar donde Claude, ChatGPT y Gemini trabajan para tus clientes.",
+      v3_body:"Si haces contenido para varias cuentas, sabes lo que cuesta cambiar entre herramientas. Feelim conecta varios modelos de IA y usa el mejor para cada tarea — investigación, redacción o generación de imágenes — reduciendo tu tiempo de producción sin perder calidad en ninguna cuenta.",
       mock_best2:"Mejor resultado combinado",
-      v4_eyebrow:"PUBLICA Y APRENDE", v4_title:"Publicación automática con tu marca, y recomendaciones para iterar.",
-      v4_body:"Feelim publica con calidad y aplica tu identidad de marca en cada pieza. Explora resultados, mide el impacto real y, después del primer mes, recibe métricas y recomendaciones concretas para mejorar tu próximo contenido.",
-      v5_eyebrow:"TIEMPO RECUPERADO", v5_title:"De 10 minutos a solo 3 para crear contenido de valor.",
-      v5_body:"Cada publicación te costaba investigación, redacción, revisión y programación por separado. Feelim comprime ese proceso completo sin sacrificar calidad, para que tu equipo publique más y piense más.",
-      how_eyebrow:"CÓMO FUNCIONA", how_title:"Del tema a la publicación, en cinco pasos.",
-      how_1_title:"Da el tema", how_1_body:"Escribe el tema o sube tus fuentes y papers.",
+      v4_eyebrow:"DE LA IDEA A LA IMAGEN", v4_title:"Crea también el carrusel o la imagen — no solo el texto.",
+      v4_body:"Una publicación que destaca no es solo palabras. Feelim también genera las piezas visuales — carruseles e imágenes con tu marca — y las deja programadas, para que tú o tu agencia reduzcan el tiempo de producción de principio a fin.",
+      v5_eyebrow:"TIEMPO RECUPERADO", v5_title:"De 10 minutos a solo 3 — sin sacrificar calidad ni autenticidad.",
+      v5_body:"Ya seas una sola persona publicando por primera vez, o una agencia manejando varias cuentas, Feelim comprime investigación, redacción, visuales y programación en un solo paso — para publicar más, y mejor.",
+      how_eyebrow:"CÓMO FUNCIONA", how_title:"Del tema al contenido publicado, en cinco pasos — sin experiencia previa.",
+      how_1_title:"Da el tema", how_1_body:"Escribe el tema o sube tus fuentes — no necesitas ser experto.",
       how_2_title:"Recibe 3 alternativas", how_2_body:"Feelim investiga y propone tres enfoques distintos.",
-      how_3_title:"Elige el formato", how_3_body:"Escoge la media que más te guste: texto, carrusel o video.",
+      how_3_title:"Elige el formato", how_3_body:"Elige texto, carrusel o imagen: Feelim crea también las piezas visuales.",
       how_4_title:"Programa y publica", how_4_body:"Con tu marca aplicada, listo para tus perfiles.",
       how_5_title:"Explora, mide, itera", how_5_body:"Métricas y recomendaciones para el próximo contenido.",
-      pricing_eyebrow:"PRECIOS", pricing_title:"Un plan para cada etapa de tu contenido.", pricing_sub:"Cancela cuando quieras. Sin permanencia.",
+      pricing_eyebrow:"PRECIOS", pricing_title:"Un plan para ti, tu marca o tu agencia.", pricing_sub:"Cancela cuando quieras. Sin permanencia.",
       plan_period:"/ mes", plan_cta:"Empezar",
       plan1_name:"Básico", plan1_desc:"Para empezar a publicar con calidad.", plan1_f1:"publicaciones al mes", plan1_f2:"Conecta tu perfil personal y de empresa", plan1_f3:"3 alternativas por tema", plan1_f4:"Programación y publicación automática",
       plan2_badge:"Más elegido", plan2_name:"Premium", plan2_desc:"Para equipos que publican cada semana.", plan2_f1:"publicaciones al mes", plan2_f2:"Analítica histórica de tu contenido", plan2_f3:"Acceso anticipado a nuevas funciones", plan2_f4:"Todo lo del plan Básico",
       plan3_name:"Agencias", plan3_desc:"Para agencias y equipos con varias marcas.", plan3_f1:"publicaciones al mes, calidad premium", plan3_f2:"Soporte MCP para integrarte con tu stack", plan3_f3:"Gestión multi-marca", plan3_f4:"Todo lo del plan Premium",
-      final_title:"Tu próximo contenido de valor toma 3 minutos.", final_sub:"Da el tema, elige la alternativa que más te guste, y deja que Feelim programe, publique e impacte por ti.", final_cta:"Crear mi primer contenido",
-      footer_tag:"Contenido con calidad, en minutos.", footer_rights:"© 2026 Feelim. Todos los derechos reservados.",
+      final_title:"Deja de sonar genérico. Empieza a destacar en 3 minutos.", final_sub:"Da el tema, elige el formato, y deja que Feelim cree el texto, la imagen y publique por ti — para tu perfil, tu empresa o tus clientes.", final_cta:"Crear mi primer contenido",
+      footer_tag:"Contenido de valor, sin sonar a IA.", footer_rights:"© 2026 Feelim. Todos los derechos reservados.",
       wompi_success_title:"¡Pago exitoso!", wompi_success_body:"Gracias por tu pago, ya puedes ingresar.", wompi_success_cta:"Ingresar", wompi_success_close:"Cerrar", wompi_popup_msg:"Pago recibido. Cerrando esta ventana…",
-      cta_pain_lead:"¿Listo para dejar atrás el contenido genérico?", cta_pain_btn:"Adquiere tu acceso",
-      cta_value_lead:"Recupera esas horas, desde hoy.", cta_value_btn:"Comprar ahora",
-      cta_how_lead:"Así de simple es empezar a publicar mejor.", cta_how_btn:"Escoge tu plan"
+      cta_pain_lead:"¿Listo para publicar sin miedo a sonar genérico?", cta_pain_btn:"Adquiere tu acceso",
+      cta_value_lead:"Recupera esas horas, sin perder tu voz.", cta_value_btn:"Comprar ahora",
+      cta_how_lead:"Así de fácil es publicar sin experiencia previa.", cta_how_btn:"Escoge tu plan"
     },
     en: {
       nav_how:"How it works", nav_features:"Features", nav_pricing:"Pricing", nav_cta:"Subscribe",
-      hero_eyebrow:"CONTENT BACKED BY REAL SOURCES",
-      hero_title:'From <span class="mark">generic content</span> to what your audience <span class="mark-yellow">actually believes</span>.',
-      hero_sub:"Feelim turns a topic into publish-ready content with verifiable quality — using your own sources, papers, or live web research — then schedules, publishes and measures it for you.",
+      hero_eyebrow:"CONTENT THAT SOUNDS LIKE YOU, NOT LIKE AI",
+      hero_title:'Publish LinkedIn content that <span class="mark">doesn\'t sound like generic AI</span> — and that <span class="mark-yellow">actually makes you stand out</span>.',
+      hero_sub:"Your personal profile, your business, or your agency's clients: Feelim turns a topic into valuable content — text, images and carousels — without needing experience or spare hours.",
       hero_cta_primary:"Create my first content", hero_cta_secondary:"See how it works",
       hero_stat_1:"per post", hero_stat_2:"alternatives per topic", hero_stat_3:"posts/month (agency plan)",
       hero_badge_models:"Claude · OpenAI · Gemini, orchestrated",
@@ -1148,41 +1170,42 @@
       mock_paper:"paper_transformers_marketing.pdf", mock_shared:"Shared with 3 teammates", mock_best:"Best combined output",
       mock_published:"Published on-brand", mock_live:"LIVE",
       mock_metric1:"Engagement", mock_metric2:"Reach", mock_metric3:"Quality score", mock_metric4:"Recommendations this month",
-      pain_eyebrow:"THE PROBLEM", pain_title:'"AI slop" is already costing your brand credibility.',
-      pain_body:"We proved it: low-quality, unsupported AI content damages how a brand is perceived. Feelim goes the opposite way — bring your own sources, or let Feelim research the web to actually understand the topic before writing a single line.",
-      pain_bad_title:"Generic AI content", pain_bad_1:"Invented or outdated facts, with no citable source", pain_bad_2:"The same flat tone in every post", pain_bad_3:"Hours of editing before it's fit to publish",
-      pain_good_title:"Content made with Feelim", pain_good_1:"Your sources, papers or web research as the base", pain_good_2:"A quality and clarity score before you publish", pain_good_3:"Share-ready in minutes, not hours",
-      v2_eyebrow:"FROM SCIENCE TO THE FEED", v2_title:"Turn scientific papers into content your team actually shares.",
-      v2_body:"Upload the study, report or paper you want to spread. Feelim reduces the effort of translating it into language your marketing team can use right away — giving your colleagues something they genuinely want to share.",
-      v3_eyebrow:"COMBINED INTELLIGENCE", v3_title:"You use Claude, ChatGPT, Gemini... we integrate them with intelligence.",
-      v3_body:"We don't bet on a single model. Feelim orchestrates several AI engines and uses the best of each for the task at hand — research, writing, verification or media generation — so the result beats any one model alone.",
-      v4_eyebrow:"PUBLISH AND LEARN", v4_title:"Automatic publishing with your brand, and recommendations to iterate.",
-      v4_body:"Feelim publishes with quality and applies your brand identity to every piece. Explore results, measure real impact, and after the first month get concrete metrics and recommendations to improve your next content.",
-      v5_eyebrow:"TIME RECLAIMED", v5_title:"From 10 minutes down to just 3 to create content that matters.",
-      v5_body:"Every post used to cost you research, writing, review and scheduling as separate steps. Feelim compresses that entire process without sacrificing quality, so your team publishes more and thinks more.",
-      how_eyebrow:"HOW IT WORKS", how_title:"From topic to published post, in five steps.",
-      how_1_title:"Give the topic", how_1_body:"Type a topic or upload your sources and papers.",
+      pain_eyebrow:"THE MOST COMMON FEAR", pain_title:"Publishing with AI you don't shape makes you sound just like everyone else.",
+      pain_body:"We get it: starting to post is scary — no time, no idea where to begin, and AI leaving you with flat content nobody remembers. Feelim does the opposite: it starts from your own sources or researches for you, so every post carries your voice and something real to say.",
+      pain_bad_title:"Publishing without Feelim", pain_bad_1:"It eats hours you don't have, or you just don't publish", pain_bad_2:"AI content sounds flat and just like everyone else's", pain_bad_3:"You're never sure it actually adds value",
+      pain_good_title:"Publishing with Feelim", pain_good_1:"Content with your voice, backed by real sources", pain_good_2:"Ready in minutes, no prior experience needed", pain_good_3:"With images and carousels that carry value too",
+      v2_eyebrow:"NO EXPERIENCE NEEDED", v2_title:"You don't need to be a social media expert to publish content that adds value.",
+      v2_body:"Upload an article, a loose idea, or just tell Feelim the topic. We research, structure and turn it into publish-ready content — in your voice, not generic AI phrasing.",
+      v3_eyebrow:"FOR AGENCIES AND TEAMS", v3_title:"Run an agency? One place where Claude, ChatGPT and Gemini work for your clients.",
+      v3_body:"If you make content for several accounts, you know how much switching tools costs. Feelim connects several AI models and uses the best one for each task — research, writing, or image generation — cutting your production time without losing quality on any account.",
+      mock_best2:"Best combined output",
+      v4_eyebrow:"FROM IDEA TO IMAGE", v4_title:"Create the carousel or the image too — not just the text.",
+      v4_body:"A post that stands out isn't just words. Feelim also generates the visual pieces — on-brand carousels and images — and schedules them ready to go, so you or your agency cut production time end to end.",
+      v5_eyebrow:"TIME RECLAIMED", v5_title:"From 10 minutes down to just 3 — without sacrificing quality or authenticity.",
+      v5_body:"Whether you're one person publishing for the first time, or an agency running several accounts, Feelim compresses research, writing, visuals and scheduling into one step — so you publish more, and better.",
+      how_eyebrow:"HOW IT WORKS", how_title:"From topic to published post, in five steps — no experience required.",
+      how_1_title:"Give the topic", how_1_body:"Type a topic or upload your sources — you don't need to be an expert.",
       how_2_title:"Get 3 alternatives", how_2_body:"Feelim researches and proposes three different angles.",
-      how_3_title:"Pick the format", how_3_body:"Choose the media you like best: text, carousel or video.",
+      how_3_title:"Pick the format", how_3_body:"Choose text, carousel or image: Feelim creates the visual pieces too.",
       how_4_title:"Schedule and publish", how_4_body:"On-brand and ready for your profiles.",
       how_5_title:"Explore, measure, iterate", how_5_body:"Metrics and recommendations for your next content.",
-      pricing_eyebrow:"PRICING", pricing_title:"A plan for every stage of your content.", pricing_sub:"Cancel anytime. No commitment.",
+      pricing_eyebrow:"PRICING", pricing_title:"A plan for you, your brand, or your agency.", pricing_sub:"Cancel anytime. No commitment.",
       plan_period:"/ month", plan_cta:"Get started",
       plan1_name:"Basic", plan1_desc:"To start publishing with quality.", plan1_f1:"posts per month", plan1_f2:"Connect your personal and business profile", plan1_f3:"3 alternatives per topic", plan1_f4:"Automatic scheduling and publishing",
       plan2_badge:"Most popular", plan2_name:"Premium", plan2_desc:"For teams publishing every week.", plan2_f1:"posts per month", plan2_f2:"Historical analytics on your content", plan2_f3:"Early access to new features", plan2_f4:"Everything in Basic",
       plan3_name:"Agency", plan3_desc:"For agencies and multi-brand teams.", plan3_f1:"posts per month, premium quality", plan3_f2:"MCP support to plug into your stack", plan3_f3:"Multi-brand management", plan3_f4:"Everything in Premium",
-      final_title:"Your next valuable content takes 3 minutes.", final_sub:"Give the topic, pick the alternative you like best, and let Feelim schedule, publish and drive impact for you.", final_cta:"Create my first content",
-      footer_tag:"Quality content, in minutes.", footer_rights:"© 2026 Feelim. All rights reserved.",
+      final_title:"Stop sounding generic. Start standing out in 3 minutes.", final_sub:"Give the topic, pick the format, and let Feelim create the text, the image, and publish it for you — for your profile, your business, or your clients.", final_cta:"Create my first content",
+      footer_tag:"Valuable content, without sounding like AI.", footer_rights:"© 2026 Feelim. All rights reserved.",
       wompi_success_title:"Payment successful!", wompi_success_body:"Thank you for your payment — you can log in now.", wompi_success_cta:"Log in", wompi_success_close:"Close", wompi_popup_msg:"Payment received. Closing this window…",
-      cta_pain_lead:"Ready to leave generic content behind?", cta_pain_btn:"Get your access",
-      cta_value_lead:"Get those hours back, starting today.", cta_value_btn:"Buy now",
-      cta_how_lead:"That's how simple it is to start publishing better.", cta_how_btn:"Choose your plan"
+      cta_pain_lead:"Ready to publish without fear of sounding generic?", cta_pain_btn:"Get your access",
+      cta_value_lead:"Get those hours back, without losing your voice.", cta_value_btn:"Buy now",
+      cta_how_lead:"That's how easy it is to publish with no prior experience.", cta_how_btn:"Choose your plan"
     },
     fr: {
       nav_how:"Comment ça marche", nav_features:"Fonctionnalités", nav_pricing:"Tarifs", nav_cta:"S'abonner",
-      hero_eyebrow:"UN CONTENU APPUYÉ SUR DE VRAIES SOURCES",
-      hero_title:"Du <span class=\"mark\">contenu générique</span> à celui auquel votre audience <span class=\"mark-yellow\">croit vraiment</span>.",
-      hero_sub:"Feelim transforme un sujet en contenu publiable à la qualité vérifiable — avec vos propres sources, des articles scientifiques ou une recherche web — puis le programme, le publie et en mesure l'impact pour vous.",
+      hero_eyebrow:"UN CONTENU QUI VOUS RESSEMBLE, PAS À L'IA",
+      hero_title:"Publiez sur LinkedIn un contenu qui <span class=\"mark\">ne sonne pas comme une IA générique</span> — et qui <span class=\"mark-yellow\">vous fait vraiment remarquer</span>.",
+      hero_sub:"Votre profil personnel, votre entreprise, ou les clients de votre agence : Feelim transforme un sujet en contenu de valeur — texte, images et carrousels — sans expérience ni heures à y consacrer.",
       hero_cta_primary:"Créer mon premier contenu", hero_cta_secondary:"Voir comment ça marche",
       hero_stat_1:"par publication", hero_stat_2:"alternatives par sujet", hero_stat_3:"publications/mois (offre agence)",
       hero_badge_models:"Claude · OpenAI · Gemini, orchestrés",
@@ -1191,41 +1214,42 @@
       mock_paper:"paper_transformers_marketing.pdf", mock_shared:"Partagé avec 3 collègues", mock_best:"Meilleur résultat combiné",
       mock_published:"Publié à votre image", mock_live:"EN LIGNE",
       mock_metric1:"Engagement", mock_metric2:"Portée", mock_metric3:"Score de qualité", mock_metric4:"Recommandations du mois",
-      pain_eyebrow:"LE PROBLÈME", pain_title:"L'« AI slop » coûte déjà de la crédibilité à votre marque.",
-      pain_body:"Nous l'avons prouvé : un contenu IA de mauvaise qualité, sans base solide, nuit à la perception d'une marque. Feelim prend le chemin inverse — apportez vos propres sources, ou laissez Feelim explorer le web pour approfondir réellement le sujet avant d'écrire la moindre ligne.",
-      pain_bad_title:"Contenu IA générique", pain_bad_1:"Données inventées ou obsolètes, sans source citable", pain_bad_2:"Le même ton plat à chaque publication", pain_bad_3:"Des heures de relecture avant d'être présentable",
-      pain_good_title:"Contenu créé avec Feelim", pain_good_1:"Vos sources, articles ou recherches web comme base", pain_good_2:"Un score de qualité et de clarté avant publication", pain_good_3:"Prêt à partager en quelques minutes",
-      v2_eyebrow:"DE LA SCIENCE AU FIL D'ACTUALITÉ", v2_title:"Transformez des articles scientifiques en contenu que votre équipe partage vraiment.",
-      v2_body:"Importez l'étude, le rapport ou l'article que vous souhaitez diffuser. Feelim réduit l'effort de traduction dans un langage que votre équipe marketing peut utiliser immédiatement — et donne à vos collègues quelque chose qu'ils ont vraiment envie de partager.",
-      v3_eyebrow:"INTELLIGENCE COMBINÉE", v3_title:"Vous utilisez Claude, ChatGPT, Gemini... nous les intégrons avec intelligence.",
-      v3_body:"Nous ne misons pas sur un seul modèle. Feelim orchestre plusieurs moteurs d'IA et utilise le meilleur de chacun selon la tâche — recherche, rédaction, vérification ou génération de médias — pour un résultat supérieur à celui de chaque modèle pris isolément.",
-      v4_eyebrow:"PUBLIER ET APPRENDRE", v4_title:"Publication automatique à votre image, avec des recommandations pour itérer.",
-      v4_body:"Feelim publie avec qualité et applique votre identité de marque à chaque contenu. Explorez les résultats, mesurez l'impact réel et, après le premier mois, recevez des métriques et des recommandations concrètes pour améliorer votre prochain contenu.",
-      v5_eyebrow:"DU TEMPS RETROUVÉ", v5_title:"De 10 minutes à seulement 3 pour créer un contenu de valeur.",
-      v5_body:"Chaque publication demandait recherche, rédaction, relecture et programmation, séparément. Feelim compresse tout ce processus sans sacrifier la qualité, pour que votre équipe publie plus et réfléchisse davantage.",
-      how_eyebrow:"COMMENT ÇA MARCHE", how_title:"Du sujet à la publication, en cinq étapes.",
-      how_1_title:"Donnez le sujet", how_1_body:"Saisissez un sujet ou importez vos sources et articles.",
+      pain_eyebrow:"LA PEUR LA PLUS RÉPANDUE", pain_title:"Publier avec une IA sans direction vous fait sonner comme tout le monde.",
+      pain_body:"On le sait : commencer à publier fait peur — pas le temps, pas de point de départ, et une IA qui vous laisse un contenu plat que personne ne retient. Feelim fait l'inverse : il part de vos propres sources ou fait la recherche pour vous, pour que chaque publication porte votre voix et dise vraiment quelque chose.",
+      pain_bad_title:"Publier sans Feelim", pain_bad_1:"Ça vous prend des heures que vous n'avez pas, ou vous ne publiez tout simplement pas", pain_bad_2:"Le contenu IA sonne plat et pareil à celui de tout le monde", pain_bad_3:"Vous ne savez jamais si ce que vous avez écrit apporte vraiment de la valeur",
+      pain_good_title:"Publier avec Feelim", pain_good_1:"Un contenu avec votre voix, appuyé sur de vraies sources", pain_good_2:"Prêt en quelques minutes, sans expérience préalable", pain_good_3:"Avec des images et des carrousels qui transmettent aussi de la valeur",
+      v2_eyebrow:"SANS EXPÉRIENCE, SANS PROBLÈME", v2_title:"Pas besoin d'être expert des réseaux pour publier un contenu qui a de la valeur.",
+      v2_body:"Importez un article, une idée en vrac, ou dites simplement le sujet à Feelim. Nous faisons la recherche, structurons, et transformons ça en contenu prêt à publier — avec votre voix, pas des phrases génériques d'IA.",
+      v3_eyebrow:"POUR LES AGENCES ET LES ÉQUIPES", v3_title:"Vous gérez une agence ? Un seul endroit où Claude, ChatGPT et Gemini travaillent pour vos clients.",
+      v3_body:"Si vous créez du contenu pour plusieurs comptes, vous savez ce que coûte le changement d'outils. Feelim connecte plusieurs modèles d'IA et utilise le meilleur pour chaque tâche — recherche, rédaction ou génération d'images — réduisant votre temps de production sans perdre en qualité sur aucun compte.",
+      mock_best2:"Meilleur résultat combiné",
+      v4_eyebrow:"DE L'IDÉE À L'IMAGE", v4_title:"Créez aussi le carrousel ou l'image — pas seulement le texte.",
+      v4_body:"Une publication qui se démarque, ce n'est pas que des mots. Feelim génère aussi les visuels — carrousels et images à votre image — et les programme, prêts à publier, pour que vous ou votre agence réduisiez le temps de production de bout en bout.",
+      v5_eyebrow:"DU TEMPS RETROUVÉ", v5_title:"De 10 minutes à seulement 3 — sans sacrifier la qualité ni l'authenticité.",
+      v5_body:"Que vous soyez une seule personne qui publie pour la première fois, ou une agence qui gère plusieurs comptes, Feelim comprime recherche, rédaction, visuels et programmation en une seule étape — pour publier plus, et mieux.",
+      how_eyebrow:"COMMENT ÇA MARCHE", how_title:"Du sujet à la publication, en cinq étapes — sans expérience préalable.",
+      how_1_title:"Donnez le sujet", how_1_body:"Saisissez un sujet ou importez vos sources — pas besoin d'être expert.",
       how_2_title:"Recevez 3 alternatives", how_2_body:"Feelim fait la recherche et propose trois angles différents.",
-      how_3_title:"Choisissez le format", how_3_body:"Sélectionnez le média que vous préférez : texte, carrousel ou vidéo.",
+      how_3_title:"Choisissez le format", how_3_body:"Choisissez texte, carrousel ou image : Feelim crée aussi les visuels.",
       how_4_title:"Programmez et publiez", how_4_body:"À votre image, prêt pour vos profils.",
       how_5_title:"Explorez, mesurez, itérez", how_5_body:"Métriques et recommandations pour le prochain contenu.",
-      pricing_eyebrow:"TARIFS", pricing_title:"Une offre pour chaque étape de votre contenu.", pricing_sub:"Annulez à tout moment. Sans engagement.",
+      pricing_eyebrow:"TARIFS", pricing_title:"Une offre pour vous, votre marque, ou votre agence.", pricing_sub:"Annulez à tout moment. Sans engagement.",
       plan_period:"/ mois", plan_cta:"Commencer",
       plan1_name:"Base", plan1_desc:"Pour commencer à publier avec qualité.", plan1_f1:"publications par mois", plan1_f2:"Connectez votre profil personnel et professionnel", plan1_f3:"3 alternatives par sujet", plan1_f4:"Programmation et publication automatiques",
       plan2_badge:"Le plus choisi", plan2_name:"Premium", plan2_desc:"Pour les équipes qui publient chaque semaine.", plan2_f1:"publications par mois", plan2_f2:"Analyse historique de votre contenu", plan2_f3:"Accès anticipé aux nouvelles fonctionnalités", plan2_f4:"Tout ce qui est inclus dans Base",
       plan3_name:"Agences", plan3_desc:"Pour les agences et équipes multi-marques.", plan3_f1:"publications par mois, qualité premium", plan3_f2:"Support MCP pour s'intégrer à votre stack", plan3_f3:"Gestion multi-marques", plan3_f4:"Tout ce qui est inclus dans Premium",
-      final_title:"Votre prochain contenu de valeur ne prend que 3 minutes.", final_sub:"Donnez le sujet, choisissez l'alternative que vous préférez, et laissez Feelim programmer, publier et générer de l'impact pour vous.", final_cta:"Créer mon premier contenu",
-      footer_tag:"Un contenu de qualité, en quelques minutes.", footer_rights:"© 2026 Feelim. Tous droits réservés.",
+      final_title:"Arrêtez de sonner générique. Commencez à vous démarquer en 3 minutes.", final_sub:"Donnez le sujet, choisissez le format, et laissez Feelim créer le texte, l'image, et publier pour vous — pour votre profil, votre entreprise ou vos clients.", final_cta:"Créer mon premier contenu",
+      footer_tag:"Un contenu de valeur, sans sonner comme une IA.", footer_rights:"© 2026 Feelim. Tous droits réservés.",
       wompi_success_title:"Paiement réussi !", wompi_success_body:"Merci pour votre paiement — vous pouvez vous connecter dès maintenant.", wompi_success_cta:"Se connecter", wompi_success_close:"Fermer", wompi_popup_msg:"Paiement reçu. Fermeture de cette fenêtre…",
-      cta_pain_lead:"Prêt à laisser le contenu générique derrière vous ?", cta_pain_btn:"Obtenez votre accès",
-      cta_value_lead:"Récupérez ces heures, dès aujourd'hui.", cta_value_btn:"Acheter maintenant",
-      cta_how_lead:"Voilà comme il est simple de commencer à mieux publier.", cta_how_btn:"Choisissez votre offre"
+      cta_pain_lead:"Prêt à publier sans craindre de sonner générique ?", cta_pain_btn:"Obtenez votre accès",
+      cta_value_lead:"Récupérez ces heures, sans perdre votre voix.", cta_value_btn:"Acheter maintenant",
+      cta_how_lead:"Voilà comme il est simple de publier sans expérience préalable.", cta_how_btn:"Choisissez votre offre"
     },
     it: {
       nav_how:"Come funziona", nav_features:"Funzionalità", nav_pricing:"Prezzi", nav_cta:"Abbonati",
-      hero_eyebrow:"CONTENUTI BASATI SU FONTI REALI",
-      hero_title:"Dal <span class=\"mark\">contenuto generico</span> a quello in cui il tuo pubblico <span class=\"mark-yellow\">crede davvero</span>.",
-      hero_sub:"Feelim trasforma un argomento in contenuti pronti da pubblicare con qualità verificabile — usando le tue fonti, paper scientifici o ricerche sul web — poi li programma, li pubblica e ne misura l'impatto per te.",
+      hero_eyebrow:"CONTENUTI CHE SUONANO COME TE, NON COME L'IA",
+      hero_title:"Pubblica su LinkedIn contenuti che <span class=\"mark\">non suonano come IA generica</span> — e che <span class=\"mark-yellow\">ti fanno davvero notare</span>.",
+      hero_sub:"Il tuo profilo personale, la tua azienda, o i clienti della tua agenzia: Feelim trasforma un argomento in contenuti di valore — testo, immagini e caroselli — senza bisogno di esperienza né di ore libere.",
       hero_cta_primary:"Crea il mio primo contenuto", hero_cta_secondary:"Guarda come funziona",
       hero_stat_1:"a pubblicazione", hero_stat_2:"alternative per argomento", hero_stat_3:"pubblicazioni/mese (piano agenzia)",
       hero_badge_models:"Claude · OpenAI · Gemini, orchestrati",
@@ -1234,35 +1258,36 @@
       mock_paper:"paper_transformers_marketing.pdf", mock_shared:"Condiviso con 3 colleghi", mock_best:"Miglior risultato combinato",
       mock_published:"Pubblicato con il tuo brand", mock_live:"LIVE",
       mock_metric1:"Engagement", mock_metric2:"Copertura", mock_metric3:"Punteggio qualità", mock_metric4:"Consigli del mese",
-      pain_eyebrow:"IL PROBLEMA", pain_title:"L'\"AI slop\" sta già costando credibilità al tuo brand.",
-      pain_body:"L'abbiamo dimostrato: un contenuto IA di bassa qualità e senza basi danneggia la percezione di un brand. Feelim fa il contrario — porta le tue fonti, oppure lascia che Feelim consulti il web per approfondire davvero l'argomento prima di scrivere una sola riga.",
-      pain_bad_title:"Contenuto IA generico", pain_bad_1:"Dati inventati o non aggiornati, senza fonte citabile", pain_bad_2:"Lo stesso tono piatto in ogni post", pain_bad_3:"Ore di revisione prima di poterlo pubblicare",
-      pain_good_title:"Contenuto creato con Feelim", pain_good_1:"Le tue fonti, paper o ricerche web come base", pain_good_2:"Un punteggio di qualità e chiarezza prima di pubblicare", pain_good_3:"Pronto da condividere in pochi minuti",
-      v2_eyebrow:"DALLA SCIENZA AL FEED", v2_title:"Trasforma paper scientifici in contenuti che il tuo team condivide davvero.",
-      v2_body:"Carica lo studio, il report o il paper che vuoi divulgare. Feelim riduce lo sforzo di tradurlo in un linguaggio che il tuo team marketing può usare subito — dando ai tuoi colleghi qualcosa che vogliono davvero condividere.",
-      v3_eyebrow:"INTELLIGENZA COMBINATA", v3_title:"Usi Claude, ChatGPT, Gemini... noi li integriamo con intelligenza.",
-      v3_body:"Non puntiamo su un solo modello. Feelim orchestra più motori IA e usa il meglio di ciascuno in base al compito — ricerca, scrittura, verifica o generazione di media — per un risultato migliore di qualsiasi modello preso da solo.",
-      v4_eyebrow:"PUBBLICA E IMPARA", v4_title:"Pubblicazione automatica con il tuo brand, e consigli per iterare.",
-      v4_body:"Feelim pubblica con qualità e applica la tua identità di brand a ogni contenuto. Esplora i risultati, misura l'impatto reale e, dopo il primo mese, ricevi metriche e consigli concreti per migliorare il prossimo contenuto.",
-      v5_eyebrow:"TEMPO RECUPERATO", v5_title:"Da 10 minuti a soli 3 per creare contenuti di valore.",
-      v5_body:"Ogni pubblicazione richiedeva ricerca, scrittura, revisione e programmazione come passaggi separati. Feelim comprime l'intero processo senza sacrificare la qualità, così il tuo team pubblica di più e pensa di più.",
-      how_eyebrow:"COME FUNZIONA", how_title:"Dall'argomento alla pubblicazione, in cinque passi.",
-      how_1_title:"Indica l'argomento", how_1_body:"Scrivi un argomento o carica le tue fonti e paper.",
+      pain_eyebrow:"LA PAURA PIÙ COMUNE", pain_title:"Pubblicare con IA senza criterio ti fa suonare uguale a tutti gli altri.",
+      pain_body:"Lo sappiamo: iniziare a pubblicare fa paura — non avere tempo, non sapere da dove partire, e ritrovarsi con contenuti IA piatti che nessuno ricorda. Feelim fa il contrario: parte dalle tue fonti o fa la ricerca per te, così ogni post ha la tua voce e qualcosa di vero da dire.",
+      pain_bad_title:"Pubblicare senza Feelim", pain_bad_1:"Ti porta via ore che non hai, o semplicemente non pubblichi", pain_bad_2:"Il contenuto IA suona piatto e uguale a quello di tutti", pain_bad_3:"Non sai mai se quello che hai scritto porta davvero valore",
+      pain_good_title:"Pubblicare con Feelim", pain_good_1:"Contenuti con la tua voce, basati su fonti reali", pain_good_2:"Pronti in pochi minuti, senza esperienza precedente", pain_good_3:"Con immagini e caroselli che trasmettono valore anche loro",
+      v2_eyebrow:"SENZA ESPERIENZA, NESSUN PROBLEMA", v2_title:"Non devi essere un esperto di social per pubblicare contenuti di valore.",
+      v2_body:"Carica un articolo, un'idea sparsa, o racconta semplicemente l'argomento a Feelim. Facciamo la ricerca, la struttura, e lo trasformiamo in contenuto pronto da pubblicare — con la tua voce, non frasi generiche di IA.",
+      v3_eyebrow:"PER AGENZIE E TEAM", v3_title:"Hai un'agenzia? Un unico posto dove Claude, ChatGPT e Gemini lavorano per i tuoi clienti.",
+      v3_body:"Se crei contenuti per più account, sai quanto costa cambiare strumento continuamente. Feelim collega più modelli IA e usa il migliore per ogni compito — ricerca, scrittura o generazione di immagini — riducendo il tuo tempo di produzione senza perdere qualità su nessun account.",
+      mock_best2:"Miglior risultato combinato",
+      v4_eyebrow:"DALL'IDEA ALL'IMMAGINE", v4_title:"Crea anche il carosello o l'immagine — non solo il testo.",
+      v4_body:"Un post che si fa notare non è solo parole. Feelim genera anche i contenuti visivi — caroselli e immagini con il tuo brand — e li programma pronti da pubblicare, così tu o la tua agenzia riducete il tempo di produzione dall'inizio alla fine.",
+      v5_eyebrow:"TEMPO RECUPERATO", v5_title:"Da 10 minuti a soli 3 — senza sacrificare qualità né autenticità.",
+      v5_body:"Che tu sia una sola persona che pubblica per la prima volta, o un'agenzia che gestisce più account, Feelim comprime ricerca, scrittura, contenuti visivi e programmazione in un solo passaggio — per pubblicare di più, e meglio.",
+      how_eyebrow:"COME FUNZIONA", how_title:"Dall'argomento al contenuto pubblicato, in cinque passi — senza esperienza precedente.",
+      how_1_title:"Indica l'argomento", how_1_body:"Scrivi un argomento o carica le tue fonti — non serve essere esperti.",
       how_2_title:"Ricevi 3 alternative", how_2_body:"Feelim fa ricerca e propone tre approcci diversi.",
-      how_3_title:"Scegli il formato", how_3_body:"Scegli il media che preferisci: testo, carosello o video.",
+      how_3_title:"Scegli il formato", how_3_body:"Scegli testo, carosello o immagine: Feelim crea anche i contenuti visivi.",
       how_4_title:"Programma e pubblica", how_4_body:"Con il tuo brand applicato, pronto per i tuoi profili.",
       how_5_title:"Esplora, misura, itera", how_5_body:"Metriche e consigli per il prossimo contenuto.",
-      pricing_eyebrow:"PREZZI", pricing_title:"Un piano per ogni fase dei tuoi contenuti.", pricing_sub:"Annulla quando vuoi. Nessun vincolo.",
+      pricing_eyebrow:"PREZZI", pricing_title:"Un piano per te, il tuo brand, o la tua agenzia.", pricing_sub:"Annulla quando vuoi. Nessun vincolo.",
       plan_period:"/ mese", plan_cta:"Inizia",
       plan1_name:"Base", plan1_desc:"Per iniziare a pubblicare con qualità.", plan1_f1:"pubblicazioni al mese", plan1_f2:"Collega il tuo profilo personale e aziendale", plan1_f3:"3 alternative per argomento", plan1_f4:"Programmazione e pubblicazione automatica",
       plan2_badge:"Più scelto", plan2_name:"Premium", plan2_desc:"Per team che pubblicano ogni settimana.", plan2_f1:"pubblicazioni al mese", plan2_f2:"Analisi storica dei tuoi contenuti", plan2_f3:"Accesso anticipato alle nuove funzionalità", plan2_f4:"Tutto ciò che è incluso in Base",
       plan3_name:"Agenzie", plan3_desc:"Per agenzie e team multi-brand.", plan3_f1:"pubblicazioni al mese, qualità premium", plan3_f2:"Supporto MCP per integrarti con il tuo stack", plan3_f3:"Gestione multi-brand", plan3_f4:"Tutto ciò che è incluso in Premium",
-      final_title:"Il tuo prossimo contenuto di valore richiede solo 3 minuti.", final_sub:"Indica l'argomento, scegli l'alternativa che preferisci, e lascia che Feelim programmi, pubblichi e generi impatto per te.", final_cta:"Crea il mio primo contenuto",
-      footer_tag:"Contenuti di qualità, in pochi minuti.", footer_rights:"© 2026 Feelim. Tutti i diritti riservati.",
+      final_title:"Smetti di suonare generico. Inizia a farti notare in 3 minuti.", final_sub:"Indica l'argomento, scegli il formato, e lascia che Feelim crei il testo, l'immagine, e pubblichi per te — per il tuo profilo, la tua azienda o i tuoi clienti.", final_cta:"Crea il mio primo contenuto",
+      footer_tag:"Contenuti di valore, senza suonare come IA.", footer_rights:"© 2026 Feelim. Tutti i diritti riservati.",
       wompi_success_title:"Pagamento riuscito!", wompi_success_body:"Grazie per il tuo pagamento: ora puoi accedere.", wompi_success_cta:"Accedi", wompi_success_close:"Chiudi", wompi_popup_msg:"Pagamento ricevuto. Chiusura della finestra…",
-      cta_pain_lead:"Pronto a lasciarti alle spalle i contenuti generici?", cta_pain_btn:"Ottieni il tuo accesso",
-      cta_value_lead:"Recupera quelle ore, da oggi.", cta_value_btn:"Acquista ora",
-      cta_how_lead:"Ecco quanto è semplice iniziare a pubblicare meglio.", cta_how_btn:"Scegli il tuo piano"
+      cta_pain_lead:"Pronto a pubblicare senza paura di suonare generico?", cta_pain_btn:"Ottieni il tuo accesso",
+      cta_value_lead:"Recupera quelle ore, senza perdere la tua voce.", cta_value_btn:"Acquista ora",
+      cta_how_lead:"Ecco quanto è semplice pubblicare senza esperienza precedente.", cta_how_btn:"Scegli il tuo piano"
     }
   };
 
