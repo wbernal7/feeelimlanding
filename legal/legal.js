@@ -53,18 +53,18 @@
   }
   apply(pick());
 
-  /* Google Analytics only if the visitor already accepted it on feelim.io */
+  /* Google tag with Consent Mode: analytics cookies only if the visitor accepted on feelim.io */
   try {
-    if (localStorage.getItem('feelim_consent') === 'granted') {
-      var GA = 'G-7H79RMEMTM';
-      window.dataLayer = window.dataLayer || [];
-      window.gtag = function () { window.dataLayer.push(arguments); };
-      gtag('js', new Date());
-      gtag('config', GA, { allow_google_signals: false, allow_ad_personalization_signals: false });
-      var gs = document.createElement('script');
-      gs.async = true;
-      gs.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA;
-      document.head.appendChild(gs);
-    }
+    var GA = 'G-7H79RMEMTM';
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    gtag('consent', 'default', { analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
+    if (localStorage.getItem('feelim_consent') === 'granted') gtag('consent', 'update', { analytics_storage: 'granted' });
+    gtag('js', new Date());
+    gtag('config', GA, { allow_google_signals: false, allow_ad_personalization_signals: false });
+    var gs = document.createElement('script');
+    gs.async = true;
+    gs.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA;
+    document.head.appendChild(gs);
   } catch (e) {}
 })();
