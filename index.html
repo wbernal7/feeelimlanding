@@ -24,6 +24,8 @@
 <meta name="twitter:description" content="Feelim convierte un tema en contenido de LinkedIn que no suena a IA genérica: texto, imágenes y carruseles para tu perfil, tu empresa o tus clientes.">
 <meta name="twitter:image" content="https://feelim.io/og-image.jpg">
 
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://feelim.io/">
 <link rel="icon" type="image/png" href="https://feelim.io/favicon.png">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
@@ -693,6 +695,19 @@
   .mini-cta.on-dark p{color:#f2f9f4;}
   .mini-cta.on-light p{color:var(--ink);}
 </style>
+<style>
+  /* legal links + cookie consent */
+  .foot-legal{display:flex;flex-wrap:wrap;gap:6px 18px;width:100%;padding-top:18px;margin-top:6px;border-top:1px solid var(--line);}
+  .foot-legal a,.foot-legal button{font:inherit;font-size:13px;font-weight:600;color:var(--ink-soft);text-decoration:none;background:none;border:0;padding:0;cursor:pointer;}
+  .foot-legal a:hover,.foot-legal button:hover{color:var(--ink);text-decoration:underline;}
+  .cc-banner{position:fixed;left:16px;right:16px;bottom:16px;z-index:300;max-width:620px;margin:0 auto;
+    background:var(--paper-raised);color:var(--ink);border:1px solid var(--line);border-radius:16px;
+    box-shadow:0 20px 60px -20px rgba(11,45,28,.45);padding:16px 18px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;}
+  .cc-banner[hidden]{display:none;}
+  .cc-banner p{margin:0;flex:1 1 280px;font-size:14px;line-height:1.5;color:var(--ink-soft);}
+  .cc-banner p a{color:var(--green-strong);text-underline-offset:3px;}
+  .cc-actions{display:flex;gap:10px;flex:0 0 auto;}
+</style>
 </head>
 <body>
 
@@ -1108,14 +1123,70 @@
       <img class="brand-logo brand-logo-dark" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAABYCAMAAAB4ZzokAAAApVBMVEW6+dgs6on////////////////+/v7///////////////8t6on///////////////////8t6okt6on///8t6okt6oks6Ygt6okt6okt6okt6okt6okt6okt6okt6Ykt6okt6okt6oks6Ykt6Ygt6okt6okt6okt6Ygt6okt6Ygt6Ygs6okt6oks6okt6okt6Ykt6okt6oks6oks6okt6on///8t6okVKvcDAAAANXRSTlMBCJSiFCTkMtTzdmSERGPCVPJutPYVJebB1YGWRrZToe/6NyE9MnRCk34f0F2dEVfisXevj/0/IXMAAAgFSURBVHja7ZzpgqI4EIAN5CBIAIVWPNvpc6Z37l19/0db7gQIEKF17IH65TDRwEdVUld6MhlllEvK3eu0g2zvBslqvTqdL/7q82KAsL7MTp3EXw9Pt0CjXs1W/4SykvJcPgwO1tNSqjazQ/B5vn18vIvlbbGdblYH/1Nh0NfBwZpWtWb2M/jy462qg8/zXUHHpoOH9WkZrF9rRz+vg8MIK5Of99PmXW7xEvgjrEgO9/v2Le55vRxhnU7B9FHJM9sHg4e1XCu7mc/BsGF9CvZA/VuLe3/AsPzdedHLY0hrqLCWm3Njl+fdp4HCWn45P87broYJ69ApJl7vhwjL//bW5ZuLxRBh7R4noyjCCp5GCqqwVluVYUDRCUOkRRD8yLA27RgAsS3LRSo/5xlton1gWNv2ZRq4Dj0eqecqaJdxbBPn/Z8BmlxsQXOhG10g7zeRgtPAUgIOuVFYhPKfp9wAmI7DC9gxr2j5UM/uwwK3D+tI+DtOL2PterRgDsBDHwgW4rdC3YuxIa7LxFeB6EeEBSxxTnAZVkgLDZ06wmLONUv/SLA84Roll9ErLZnY4JoLrPReqDn5OLAgFmHZF4HFaNXkiJPMqKBYg4LFLd1g/GK8B2NNRZdvxwydi5sh0CSwokXftonS/luEhasOvGNeCZYmXDPgFWGpSwEW1WFVwHVgTYjgOpgXWbImNlV3E9phtceBACLm2qkwVIsSIJQPc8vRuNwpdTF/Z40pAkmSACglDqBe2Q1rZ7nrDSuM0L3CQuyYTPZgkFmOCMTQbQTaYIUhbfTb1NDy947ypEjy9fhNheGjy/jPgeSa6bL2hYfosZ9lt5N9eu0LC1nV/cCwSHnqcIOh1X3CRi2wwt83dV3XuMsIPSdbOSPDga6WvQLsmcm0gJg6zt6cZreZF4pCdaKghb/3PWExj0p2y/BFwVJOQbrFCrtzHazIyguxiDCMJe63qNThUGgXNBjr77WN3n/tBQu4dW4GLqQJis8k/rpHWmGV9EAYZsOyumIT8HUunwO9C6uHYNoLllvvkmELCqxo3TCa5Yy6wLLsyu9ihpzKJPq7wPo9a4clcR3KSTI5LZfbIG1ycGFD1oFxIVVYepXL0bMkt8LOS/5J5Tk4tcI6YqciKS3kNbr5GJX3f7loQMkpxaACS/oOJJNRS8zBb7vBepkpwJJI+ix2y7DUgKHTPCx5711gKYsn7HXToFOtdLE7dYPFqhCwp2uWphc8rlS13IJ35WlWOM4Qk8j6xWE5whI/Xd53qLGCud8LFqPChmPHDjlEro5LEYqYlDI0Fo0DkJmCy2GgS8MyRFiz2efz161FcOoFy6JcN5DgUeHi2o34vw3B+yJ818d2D1jUkKxcGDfB6tBDA9Z+P1jcCgslI8j9BIMUrLBYLCFOYWvvBsuwCSJ2EQ3VGULMaYB18r+duW5t46au186wBI0pVoy4QxF7D9xvKCVBOFQPdoSVuCfALjqGsJSwqMI6nXb77+ca4clfvAMsqhWK+9xTxdGixc0tVANR+H9E628nWHqlCJSqc6TgjbBCU1RXrrvYCE/BY2dYBLeuq7QIq3Gz6gTLlTgn3qTq2EhgnfzdXBXXPOmD39x19rPcG4DFSiXk3BGJ7q8F1ul02L0oNR9t03Nk8/a0Mq2mleHfASu0xdW/ssMoD/PNHAjuaHI2bPXUnin1qi1Hk78FVswr2LzsH+5ALIuHH+tvwWrpL18yWotf6dEdeX+zWtbhL4EVrV6+PzssIznMZn56xtBPT2K+3adnDlf7yQirTjbJRvhfRrTG7T8bFsVyMYqwaN047xZhraLBj+vs+FxdI6oaLCaENaZc4h40IazRasZFGfabg7WM1qtNNng571UKEzz4xjJVKQbsXGT9A7Ae7v3cCL+HUS/sDsuQJEUlwuPtxg6eGzTD1/wI62n3Fnq5mHTPwQvDHKZQ8s3Dto8B6366zM7exyfIwtC8ByzxDg2ztg5daBb1WF2Z+OZgcbU6bBZJkqQHrEIGlGLPiorCqRDXNS1WbYU5Ukc3XZcI4ywLXRXW19m5f1fl5XtUHz32ggXlMSTF2WNbjal6nPfWkqvCWizPYrXavOZppx6wxKVbKpYkgSKjdl1Yk1/noPocnc6HtnHsCws5SrCA2QwVw+vCeggU7S/YzKO/A5X0AfaFBWysAmsCmyMefN0FPjTE/VxBtk+LOMAhWp7l7wNrApsN0ZKk228B1hl1Cuh6mDZ2Faj3OkCrSbd4rx5z6A3BAhCpCGGmh2XF5a4tR8A2aEsRKHlEvZ6qcWVYyMxbvBqlthJfEM8QMwdWW+NcjQdhFDp9gC1XLorTbl7i8CmzZ7sILKC154ya2xaKz593fkY9om2tYMDVHFwG4OmVXkli6iUtxIaj50cgIcundFnm5buapieiaVZWlsyuhZdQfgvpxfBaFqcSYaAYAisUWs6Bda5A4ppaLlF7p/ysa8jDEseFnnx733OpyyltBay2TANZG3X1u6XA4/qwhGeq3Fple1Ebd0Gx/zysjyMVWFH+VvhI+Wc6wiq3oYYrH8tONpFw38774lHZMRphxWneJEceF0ST8nbcYQdLG+fgYSVNZAkhjefpEr/HxCMsCSyD95novFdwhFUyw1iHEn8iThYlvUrUBFGH8WiG5TMFLsk0yLFJFmlgi7jl0yMjrKj4S+UfR9ehuwdPhwcLGl1heXAyPDvsRos6bHisJoCZVgexCZgMUmAHmYwySo38D+r0rTftvwO6AAAAAElFTkSuQmCC" alt="Feelim" />
       <small data-i18n="footer_tag">Contenido de valor, sin sonar a IA.</small>
     </div>
+    <div class="foot-legal">
+      <a href="/terms/" data-i18n="footer_terms">Términos de uso</a>
+      <a href="/privacy/" data-i18n="footer_privacy">Política de privacidad</a>
+      <a href="/cookies/" data-i18n="footer_cookies">Política de cookies</a>
+      <a href="/acceptable-use/" data-i18n="footer_aup">Uso aceptable</a>
+      <a href="/dpa/" data-i18n="footer_dpa">Acuerdo de tratamiento de datos</a>
+      <button type="button" id="ccSettings" data-i18n="footer_cookie_settings">Configurar cookies</button>
+    </div>
     <small data-i18n="footer_rights">© 2026 Feelim. Todos los derechos reservados.</small>
   </div>
 </footer>
+
+<div class="cc-banner" id="ccBanner" role="region" aria-label="Cookies" hidden>
+  <p data-i18n-html="cc_text">Usamos Google Analytics para entender cómo se usa este sitio. Solo se activa si lo aceptas. Más información en nuestra <a href="/cookies/">Política de cookies</a>.</p>
+  <div class="cc-actions">
+    <button type="button" class="btn btn-ghost btn-sm" id="ccReject" data-i18n="cc_reject">Rechazar</button>
+    <button type="button" class="btn btn-primary btn-sm" id="ccAccept" data-i18n="cc_accept">Aceptar</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var GA_ID = 'G-7H79RMEMTM', KEY = 'feelim_consent';
+  var banner = document.getElementById('ccBanner');
+  function read(){ try{ return localStorage.getItem(KEY); }catch(e){ return null; } }
+  function write(v){ try{ localStorage.setItem(KEY, v); }catch(e){} }
+  function loadGA(){
+    if(window.__feelimGA) return;
+    window.__feelimGA = true;
+    window['ga-disable-' + GA_ID] = false;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){ window.dataLayer.push(arguments); };
+    gtag('js', new Date());
+    gtag('config', GA_ID, { allow_google_signals:false, allow_ad_personalization_signals:false });
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(s);
+  }
+  function clearGA(){
+    window['ga-disable-' + GA_ID] = true;
+    var host = location.hostname, parts = host.split('.');
+    var domains = [host, '.' + host, '.' + parts.slice(-2).join('.')];
+    var names = ['_ga', '_ga_' + GA_ID.replace('G-','')];
+    names.forEach(function(n){
+      domains.forEach(function(d){
+        document.cookie = n + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=' + d;
+      });
+      document.cookie = n + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+    });
+  }
+  document.getElementById('ccAccept').addEventListener('click', function(){ write('granted'); banner.hidden = true; loadGA(); });
+  document.getElementById('ccReject').addEventListener('click', function(){ write('denied'); banner.hidden = true; clearGA(); });
+  document.getElementById('ccSettings').addEventListener('click', function(){ banner.hidden = false; });
+  var saved = read();
+  if(saved === 'granted'){ loadGA(); } else if(saved !== 'denied'){ banner.hidden = false; }
+})();
+</script>
 
 <script>
 (function(){
   const T = {
     es: {
+      footer_terms:"Términos de uso", footer_privacy:"Política de privacidad", footer_cookies:"Política de cookies", footer_aup:"Uso aceptable", footer_dpa:"Acuerdo de tratamiento de datos", footer_cookie_settings:"Configurar cookies", cc_text:"Usamos Google Analytics para entender cómo se usa este sitio. Solo se activa si lo aceptas. Más información en nuestra <a href=\"/cookies/\">Política de cookies</a>.", cc_accept:"Aceptar", cc_reject:"Rechazar",
       nav_how:"Cómo funciona", nav_features:"Funciones", nav_pricing:"Precios", nav_cta:"Suscríbete",
       hero_eyebrow:"CONTENIDO QUE SUENA A TI, NO A IA",
       hero_title:'Publica en LinkedIn contenido que <span class="mark">no suena a IA genérica</span>, y que <span class="mark-yellow">de verdad te hace destacar</span>.',
@@ -1161,6 +1232,7 @@
       cta_how_lead:"Así de fácil es publicar sin experiencia previa.", cta_how_btn:"Escoge tu plan"
     },
     en: {
+      footer_terms:"Terms of Use", footer_privacy:"Privacy Policy", footer_cookies:"Cookie Policy", footer_aup:"Acceptable Use", footer_dpa:"Data Processing Agreement", footer_cookie_settings:"Cookie settings", cc_text:"We use Google Analytics to understand how this site is used. It only runs if you accept. More information in our <a href=\"/cookies/\">Cookie Policy</a>.", cc_accept:"Accept", cc_reject:"Reject",
       nav_how:"How it works", nav_features:"Features", nav_pricing:"Pricing", nav_cta:"Subscribe",
       hero_eyebrow:"CONTENT THAT SOUNDS LIKE YOU, NOT LIKE AI",
       hero_title:'Publish LinkedIn content that <span class="mark">doesn\'t sound like generic AI</span>, and that <span class="mark-yellow">actually makes you stand out</span>.',
@@ -1206,6 +1278,7 @@
       cta_how_lead:"That's how easy it is to publish with no prior experience.", cta_how_btn:"Choose your plan"
     },
     fr: {
+      footer_terms:"Conditions d'utilisation", footer_privacy:"Politique de confidentialité", footer_cookies:"Politique relative aux cookies", footer_aup:"Utilisation acceptable", footer_dpa:"Accord de traitement des données", footer_cookie_settings:"Paramètres des cookies", cc_text:"Nous utilisons Google Analytics pour comprendre comment ce site est utilisé. Il ne s’active que si vous l’acceptez. Plus d’informations dans notre <a href=\"/cookies/\">Politique relative aux cookies</a>.", cc_accept:"Accepter", cc_reject:"Refuser",
       nav_how:"Comment ça marche", nav_features:"Fonctionnalités", nav_pricing:"Tarifs", nav_cta:"S'abonner",
       hero_eyebrow:"UN CONTENU QUI VOUS RESSEMBLE, PAS À L'IA",
       hero_title:"Publiez sur LinkedIn un contenu qui <span class=\"mark\">ne sonne pas comme une IA générique</span>, et qui <span class=\"mark-yellow\">vous fait vraiment remarquer</span>.",
@@ -1251,6 +1324,7 @@
       cta_how_lead:"Voilà comme il est simple de publier sans expérience préalable.", cta_how_btn:"Choisissez votre offre"
     },
     it: {
+      footer_terms:"Termini di utilizzo", footer_privacy:"Informativa sulla privacy", footer_cookies:"Informativa sui cookie", footer_aup:"Utilizzo accettabile", footer_dpa:"Accordo sul trattamento dei dati", footer_cookie_settings:"Impostazioni cookie", cc_text:"Utilizziamo Google Analytics per capire come viene usato questo sito. Si attiva solo se accetti. Maggiori informazioni nella nostra <a href=\"/cookies/\">Informativa sui cookie</a>.", cc_accept:"Accetta", cc_reject:"Rifiuta",
       nav_how:"Come funziona", nav_features:"Funzionalità", nav_pricing:"Prezzi", nav_cta:"Abbonati",
       hero_eyebrow:"CONTENUTI CHE SUONANO COME TE, NON COME L'IA",
       hero_title:"Pubblica su LinkedIn contenuti che <span class=\"mark\">non suonano come IA generica</span>, e che <span class=\"mark-yellow\">ti fanno davvero notare</span>.",
